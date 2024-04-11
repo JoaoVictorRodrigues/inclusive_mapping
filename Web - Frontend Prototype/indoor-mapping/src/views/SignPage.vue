@@ -23,13 +23,25 @@
             placeholder="Enter your email"
           />
         </form>
+        <button class="mt-8 p-2 bg-red-700 text-white font-bold" @click="signIn()">Sign In (Test)</button>
       </div>
+      
     </div>
   </div>
 </template>
 
 <script>
-export default {}
+export default {
+  components: {},
+  data() {
+    return {}
+  },
+  methods: {
+    signIn() {      
+      this.$emit("signIn");
+    }
+  }
+}
 </script>
 
 <style scoped></style>
