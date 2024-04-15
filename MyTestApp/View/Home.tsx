@@ -1,7 +1,7 @@
 import React from 'react';
-import { Button, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-const HomePage = () => {
+const HomePage = ({navigation}: {navigation: any}) => {
     return (
         <View style={{ flex: 1, backgroundColor: 'black'}}>
             <View id='Header' style={styles.pageHeader}>
@@ -21,7 +21,7 @@ const HomePage = () => {
                         <TouchableOpacity style={styles.btnGray}>
                             <Text style={styles.btnLabelGray}>Virtual Diary</Text>    
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.btnOrange}>
+                        <TouchableOpacity style={styles.btnOrange} onPress={() => navigation.navigate("Profile")}>
                             <Text style={styles.btnLabelOrange}>Profile</Text>    
                         </TouchableOpacity>      
                     </View> 
