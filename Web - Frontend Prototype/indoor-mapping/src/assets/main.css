@@ -8,6 +8,10 @@
   color: #2c3e50;
 }
 
+h1{
+  @apply text-5xl font-semibold
+}
+
 #map {
   @apply w-full h-full fixed;
 }
@@ -37,4 +41,11 @@
 
 .demoCards {
   @apply w-3/4 my-4 p-4 bg-slate-400 rounded-xl;
+}
+
+
+/* Icon Styling */
+
+.fieldIcon {
+  @apply absolute min-w-10 p-1 text-xl text-gray-400;
 }
