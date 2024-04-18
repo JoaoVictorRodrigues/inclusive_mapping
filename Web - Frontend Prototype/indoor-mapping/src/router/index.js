@@ -12,6 +12,16 @@ const routes = [
         path: '/map',
         name: 'Map',
         component: Map
+    },
+    {
+        path: '/userManagement',
+        name: 'UserManagement',
+        component: Map
+    },
+    {
+        path: '/Beacons',
+        name: 'Beacons',
+        component: Map
     }
 ]
 

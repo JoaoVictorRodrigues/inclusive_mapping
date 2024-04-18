@@ -1,18 +1,17 @@
 <template>
   <div>
-    <Map v-if="isSignedIn"></Map>
+    <MainPage v-if="isSignedIn"></MainPage>
     <SignPage v-else @signIn="signInHandler()"></SignPage>
   </div>
 </template>
 
-|
 <script>
-import Map from './views/Map.vue'
 import SignPage from './views/AuthenticationPages/SignPage.vue'
+import MainPage from './views/MainPage.vue'
 
 export default {
   components: {
-    Map,
+    MainPage,
     SignPage
   },
   data() {
