@@ -32,11 +32,13 @@ const HomePage = ({navigation}: {navigation: any}) => {
 
 const styles = StyleSheet.create({
     pageHeader:{
-        flex: 1, 
-        flexDirection: 'row', 
-        justifyContent:'space-between', 
-        paddingTop: 58, 
-        height: 36
+        flex: 0.5,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginLeft: 18,
+        marginRight: 14,
+        paddingTop: 58,
+        height: 36,
     },
     headerLabelsLeft: {
         direction:'ltr', 
