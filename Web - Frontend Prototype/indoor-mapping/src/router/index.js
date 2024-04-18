@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router"
 import Map from '../views/Map.vue'
-import SignPage from "@/views/SignPage.vue"
+import SignPage from "@/views/AuthenticationPages/SignPage.vue"
 
 const routes = [
     {
