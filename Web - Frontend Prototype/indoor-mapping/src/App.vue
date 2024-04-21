@@ -1,7 +1,7 @@
 <template>
   <div>
     <MainPage v-if="isSignedIn"></MainPage>
-    <SignPage v-else @signIn="signInHandler()"></SignPage>
+    <SignPage v-else @logIn="handler_LogIn()"></SignPage>
   </div>
 </template>
 
@@ -20,7 +20,7 @@ export default {
     }
   },
   methods: {
-    signInHandler() {
+    handler_LogIn() {
       this.isSignedIn = true
     }
   }

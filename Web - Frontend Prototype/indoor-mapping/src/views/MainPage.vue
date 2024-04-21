@@ -17,6 +17,7 @@
       </router-link>
     </div>
   </div>
+  <!-- eslint-disable vue/no-multiple-template-root -->
   <router-view />
 </template>
 

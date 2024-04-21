@@ -33,12 +33,19 @@
       f_icon="fa-lock"
     ></Field>
   </form>
+  <!-- eslint-disable vue/no-multiple-template-root -->
   <div>
-    <button class="w-full rounded-md mt-8 p-2 bg-red-700 text-white font-bold" @click="signUp()">
+    <button
+      class="w-full rounded-md mt-8 p-2 bg-red-700 text-white font-bold"
+      @click="$emit('signUp')"
+    >
       Sign Up (Test)
     </button>
     <p class="m-4">
-      Already have an account? <a class="text-red-800" @click="gotoLogIn()">Log in</a>
+      Already have an account?
+      <router-link class="text-red-800" :key="route_logIn.path" :to="route_logIn.path">
+        Log in
+      </router-link>
     </p>
   </div>
 </template>
@@ -51,14 +58,8 @@ export default {
     Field
   },
   data() {
-    return {}
-  },
-  methods: {
-    signUp() {
-      this.$emit('signUp')
-    },
-    gotoLogIn() {
-      this.$emit('gotoLogIn')
+    return {
+      route_logIn: this.$router.options.routes.find((route) => route.name === 'LogIn')
     }
   }
 }

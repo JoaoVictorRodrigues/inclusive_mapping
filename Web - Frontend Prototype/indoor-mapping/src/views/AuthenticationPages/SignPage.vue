@@ -9,7 +9,7 @@
       <div class="w-full h-24 flex flex-row justify-between items-center">
         <div class="h-full flex flex-col justify-between items-start">
           <h1 class="text-left">{{ title }}</h1>
-          <p v-if="!(page === 'passwordReset')">Never get lost when in ISEP</p>
+          <p v-if="!(pagePath === '/PasswordReset')">Never get lost when in ISEP</p>
         </div>
         <img
           class="w-36 object-cover h-full"
@@ -17,22 +17,11 @@
           alt=""
         />
       </div>
-      <SignUp
-        v-if="page === 'signUp'"
-        @signUp="this.$emit('signIn')"
-        @gotoLogIn="page = 'logIn'"
-      ></SignUp>
-      <LogIn
-        v-else-if="page === 'logIn'"
-        @logIn="this.$emit('signIn')"
-        @gotoPasswordReset="page = 'passwordReset'"
-        @gotoSignUp="page = 'signUp'"
-      ></LogIn>
-      <PasswordReset
-        v-else-if="page === 'passwordReset'"
-        @passwordReset="this.$emit('signIn')"
-        @gotoSignUp="page = 'signUp'"
-      ></PasswordReset>
+      <router-view
+        @signUp="handle_SignUp()"
+        @logIn="handle_LogIn()"
+        @passwordReset="handle_PasswordReset()"
+      />
     </div>
   </div>
 </template>
@@ -51,27 +40,40 @@ export default {
     PasswordReset
   },
   data() {
-    return {
-      page: 'signUp'
-    }
+    return {}
+  },
+  beforeMount() {
+    this.$router.push({ name: 'LogIn' })
   },
   computed: {
+    pagePath() {
+      return this.$router.currentRoute.value.fullPath
+    },
     title() {
-      switch (this.page) {
-        case 'signUp':
-          return 'Sign up'
-        case 'logIn':
+      switch (this.pagePath) {
+        case '/':
           return 'Log in'
-        case 'passwordReset':
-          return 'Reset password'
+        case '/SignUp':
+          return 'Sign up'
+        case '/PasswordReset':
+          return 'Reset Password'
         default:
           return ''
       }
     }
   },
   methods: {
-    signIn() {
-      this.$emit('signIn')
+    handle_SignUp() {
+      // TODO: Sing Up logic here
+      this.$emit('logIn')
+    },
+    handle_LogIn() {
+      // TODO: Log In logic here
+      this.$emit('logIn')
+    },
+    handle_PasswordReset() {
+      // TODO: Password Reset logic here
+      this.$emit('logIn')
     }
   }
 }

@@ -16,14 +16,25 @@
       f_placeholder="Enter your password"
       f_icon="fa-lock"
     ></Field>
-    <a class="text-right text-red-800" @click="gotoPasswordReset()">Forgot your password?</a>
+    <p class="text-right text-red-800">
+      <router-link :key="route_PasswordReset.path" :to="route_PasswordReset.path">
+        Forgot your password?
+      </router-link>
+    </p>
   </form>
+  <!-- eslint-disable vue/no-multiple-template-root -->
   <div>
-    <button class="w-full rounded-md mt-8 p-2 bg-red-700 text-white font-bold" @click="logIn()">
+    <button
+      class="w-full rounded-md mt-8 p-2 bg-red-700 text-white font-bold"
+      @click="$emit('logIn')"
+    >
       Log in (Test)
     </button>
     <p class="m-4">
-      Don't have an account? <a class="text-red-800" @click="gotoSignUp()">Sign up</a>
+      Don't have an account?
+      <router-link class="text-red-800" :key="route_SignUp.path" :to="route_SignUp.path">
+        Sign up
+      </router-link>
     </p>
   </div>
 </template>
@@ -36,17 +47,11 @@ export default {
     Field
   },
   data() {
-    return {}
-  },
-  methods: {
-    logIn() {
-      this.$emit('logIn')
-    },
-    gotoPasswordReset() {
-      this.$emit('gotoPasswordReset')
-    },
-    gotoSignUp() {
-      this.$emit('gotoSignUp')
+    return {
+      route_SignUp: this.$router.options.routes.find((route) => route.name === 'SignUp'),
+      route_PasswordReset: this.$router.options.routes.find(
+        (route) => route.name === 'PasswordReset'
+      )
     }
   }
 }
