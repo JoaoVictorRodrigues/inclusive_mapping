@@ -7,11 +7,11 @@ import api from "../api/index.js";
 const Register = ({ navigation }: { navigation: any }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [focusedInput, setFocusedInput] = useState(null);
+    const [focusedInput, setFocusedInput] = useState<string | null>(null);
     const [errorMessage, setErrorMessage] = useState("");
     const [errorMessagePassword, setErrorMessagePassword] = useState("");
 
-    const handleFocus = (inputName) => {
+    const handleFocus = (inputName: string) => {
         setFocusedInput(inputName);
     };
 
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
         borderColor: '#9a1924', // Change border color when input is focused
     },
     visible: {
-        display: 'inline-block',
+        display: 'flex',
     },
     signInButton: {
         marginTop: "5%",
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
         color: "red",
         opacity: 0.75,
         fontWeight: "bold",
-        display: "block",
+        display: "flex",
         textAlign: "center",
         marginBottom: 10
     },

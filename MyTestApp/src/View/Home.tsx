@@ -6,7 +6,8 @@ const HomePage = ({navigation}: {navigation: any}) => {
         <View style={{ flex: 1, backgroundColor: 'black'}}>
             <View id='Header' style={styles.pageHeader}>
                 <Text style={styles.headerLabelsLeft}>Back</Text>
-                <Text style={styles.headerLabelsRight}>Logout</Text> 
+                <Text style={styles.headerLabelsRight} onPress={() => navigation.navigate('Feedback')}>Feedback</Text> 
+                <Text style={styles.headerLabelsRight}>Logout</Text>
             </View>
             <View id='ImageHolder' style={styles.imageHolder}>
                 <Image style={styles.schoolLogo} 
@@ -17,6 +18,9 @@ const HomePage = ({navigation}: {navigation: any}) => {
                     <View style={styles.whiteRect}>
                         <TouchableOpacity style={styles.btnOrange}>
                             <Text style={styles.btnLabelOrange}>Map</Text>    
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.btnOrange} onPress={() => navigation.navigate("ViewEntries")}>
+                            <Text style={styles.btnLabelOrange}>View Entries</Text>    
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.btnGray}>
                             <Text style={styles.btnLabelGray}>Virtual Diary</Text>    
