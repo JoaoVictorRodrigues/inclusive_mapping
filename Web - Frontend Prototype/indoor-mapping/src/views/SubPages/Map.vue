@@ -14,7 +14,7 @@
   import { Tile as TileLayer, Vector as VectorLayer } from 'ol/layer'
   import { OSM, Vector as VectorSource } from 'ol/source'
   
-  import Sidebar from '../components/Sidebar.vue'
+  import Sidebar from '../../components/Sidebar.vue'
   
   export default {
     components: {

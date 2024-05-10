@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router"
-import Map from '../views/Map.vue'
+import Map from '../views/SubPages/Map.vue'
+import UserManagement from '../views/SubPages/UserManagement.vue'
 import SignPage from "@/views/AuthenticationPages/SignPage.vue"
 import LogIn from "@/views/AuthenticationPages/LogIn.vue"
 import SignUp from "@/views/AuthenticationPages/SignUp.vue"
@@ -34,7 +35,7 @@ const routes = [
     {
         path: '/userManagement',
         name: 'UserManagement',
-        component: Map
+        component: UserManagement
     },
     {
         path: '/Beacons',

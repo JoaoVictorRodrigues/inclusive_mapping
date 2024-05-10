@@ -8,8 +8,17 @@
   color: #2c3e50;
 }
 
-h1{
-  @apply text-5xl font-semibold
+h1 {
+  @apply text-5xl font-semibold;
+}
+
+h2 {
+  @apply text-4xl font-medium;
+}
+
+
+h3 {
+  @apply text-3xl font-medium;
 }
 
 #map {
@@ -42,7 +51,6 @@ h1{
 .demoCards {
   @apply w-3/4 my-4 p-4 bg-slate-400 rounded-xl;
 }
-
 
 /* Icon Styling */
 
