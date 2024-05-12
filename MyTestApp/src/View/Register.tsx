@@ -14,11 +14,9 @@ const Register = ({ navigation }: { navigation: any }) => {
     const [errorMessage, setErrorMessage] = useState("");
     const [errorMessagePassword, setErrorMessagePassword] = useState("");
 
-
     const handleFocus = (inputName: string) => {
         setFocusedInput(inputName);
     };
-    
 
     const handleBlur = () => {
         setFocusedInput(null);
@@ -37,12 +35,12 @@ const Register = ({ navigation }: { navigation: any }) => {
             email: email,
             password: password,
         })
-            .then(async function (response: { data: { accessToken: any; id: any; type: any; }; }) {
-                console.log(response.data);
+            .then(async function (response: { data: { accessToken: any; id: any; type: any; accessibilityLvl: any; }; }) {
 
                 await AsyncStorage.setItem("token", response.data.accessToken);
                 await AsyncStorage.setItem("userID", response.data.id);
                 await AsyncStorage.setItem("type", response.data.type);
+                await AsyncStorage.setItem('accessibilityLvl', response.data.accessibilityLvl.toString());
                 navigation.navigate('Home')
             })
             .catch(function (error: { response: { data: { msg: React.SetStateAction<string>; }; }; }) {
@@ -195,7 +193,7 @@ const styles = StyleSheet.create({
         borderColor: '#9a1924', // Change border color when input is focused
     },
     visible: {
-        display: 'flex',
+        display: 'inline-block',
     },
     signUpButton: {
         marginTop: "5%",

@@ -25,12 +25,13 @@ const Register = ({ navigation }: { navigation: any }) => {
                 email: email,
                 password: password,
             })
-                .then(async function (response: { data: { accessToken: any; id: any; type: any; }; }) {
+                .then(async function (response: { data: { accessToken: any; id: any; type: any; accessibilityLvl: any; }; }) {
                     console.log(response.data);
 
                     await AsyncStorage.setItem("token", response.data.accessToken);
                     await AsyncStorage.setItem("userID", response.data.id);
                     await AsyncStorage.setItem("type", response.data.type);
+                    await AsyncStorage.setItem('accessibilityLvl', response.data.accessibilityLvl.toString());
                     navigation.navigate('Home')
                 })
                 .catch(function (error: { response: { data: { msg: React.SetStateAction<string>; }; }; }) {
@@ -133,7 +134,7 @@ const styles = StyleSheet.create({
         borderColor: '#9a1924', // Change border color when input is focused
     },
     visible: {
-        display: 'flex',
+        display: 'inline-block',
     },
     signInButton: {
         marginTop: "5%",
@@ -154,7 +155,7 @@ const styles = StyleSheet.create({
         color: "red",
         opacity: 0.75,
         fontWeight: "bold",
-        display: "flex",
+        display: "block",
         textAlign: "center",
         marginBottom: 10
     },

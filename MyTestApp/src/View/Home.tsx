@@ -16,7 +16,7 @@ const HomePage = ({navigation}: {navigation: any}) => {
             <View id='BtnContainer' 
                   style={styles.btnContainer}>
                     <View style={styles.whiteRect}>
-                        <TouchableOpacity style={styles.btnOrange}>
+                        <TouchableOpacity style={styles.btnOrange} onPress={() => navigation.navigate("Map")}>
                             <Text style={styles.btnLabelOrange}>Map</Text>    
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.btnOrange} onPress={() => navigation.navigate("ViewEntries")}>
