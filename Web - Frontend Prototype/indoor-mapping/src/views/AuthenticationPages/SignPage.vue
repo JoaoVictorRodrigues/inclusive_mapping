@@ -1,6 +1,6 @@
 <template>
   <div
-    class="h-screen bg-cover bg-no-repeat bg-bottom bg-[url('../../public/images/ISEP_PortoAP9I0151-v3.jpg')]"
+    class="h-screen bg-cover bg-no-repeat bg-bottom bg-[url('/images/ISEP_PortoAP9I0151-v3.jpg')]"
   >
     <!-- White Section -->
     <div
@@ -8,12 +8,12 @@
     >
       <div class="w-full h-24 flex flex-row justify-between items-center">
         <div class="h-full flex flex-col justify-between items-start">
-          <h1 class="text-left">{{ title }}</h1>
+          <h1 class="text-left ">{{ title }}</h1>
           <p v-if="!(pagePath === '/PasswordReset')">Never get lost when in ISEP</p>
         </div>
         <img
           class="w-36 object-cover h-full"
-          src="../../../public/images/ISEP_redLogo.jpg"
+          src="/images/ISEP_redLogo.jpg"
           alt=""
         />
       </div>

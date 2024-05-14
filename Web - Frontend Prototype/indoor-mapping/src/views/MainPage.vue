@@ -1,23 +1,19 @@
 <!-- eslint-disable vue/no-multiple-template-root -->
 <template>
   <div id="nav" class="w-full h-16 dark:bg-navbarBase flex flex-row">
-    <!--NavBar-->
-    <div class="flex flex-row">
-      <img
-        class="hidden sm:block w-32 object-cover h-full"
-        src="../../public/images/ISEP_redLogo.jpg"
-        alt=""
-      />
+    <!--NavBar Title-->
+    <div class="basis-1/4 flex flex-row">
+      <img class="hidden sm:block w-32 object-cover h-full" src="/images/ISEP_redLogo.jpg" alt="" />
       <p class="hidden lg:block self-center text-white text-base font-bold mr-2">Indoor Mapping</p>
     </div>
     <!--NavBar Buttons-->
-    <div class="flex flex-row w-3/4 sm:w-3/5">
+    <div class="basis-3/5 flex flex-row w-3/4 sm:w-3/5 justify-items-start">
       <router-link
         v-for="route in routes"
         :key="route.link.path"
         :to="route.link.path"
         class="basis-auto mx-4 border-x-4 border-navBarHover px-4 h-full"
-        :class="route.open ? 'w-60' : 'w-20'"
+        :class="route.open ? 'w-60 bg-navBarHover' : 'w-20'"
         @click="closeButtonNav(route)"
       >
         <div class="relative flex flex-row items-center h-full w-full">
@@ -32,14 +28,18 @@
       </router-link>
     </div>
     <!--NavBar Profile-->
-    <div class="flex flex-row justify-self-end">
+    <div
+      class="basis-1/5 flex flex-row-reverse items-center justify-start "
+      :class="profile.open ? 'bg-navBarHover' : 'bg-navbarBase'"
+    >
       <router-link :to="profile.link.path" @click="closeRoutes()">
-        <div class="relative flex flex-row items-center h-full w-full">
-          <i class="fa fa-user-circle fieldIcon"></i>
-          <p class="hidden sm:block justify-self-center text-white text-base font-bold ml-10">
-            {{ profile.label }}
-          </p>
-        </div>
+        <!--Image-->
+        <img
+          class="w-12 h-12 p-1 rounded-full justify-self-center mr-2"
+          src="/images/default_avatar.png"
+          alt=""
+        />
+        <p class="justify-self-center text-white text-base font-bold">Name</p>
       </router-link>
     </div>
   </div>
@@ -79,7 +79,8 @@ export default {
       profile: {
         link: this.$router.options.routes.find((route) => route.name === 'UserProfile'),
         label: 'User Profile',
-        icon: 'fa-users'
+        icon: 'fa-users',
+        open: false
       }
     }
   },
@@ -92,9 +93,11 @@ export default {
           element.open = true
         }
       })
+      this.profile.open = false
     },
     closeRoutes() {
       this.routes.forEach((element) => (element.open = false))
+      this.profile.open = true
     }
   },
   beforeMount() {
