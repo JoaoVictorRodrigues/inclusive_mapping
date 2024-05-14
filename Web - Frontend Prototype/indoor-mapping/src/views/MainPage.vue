@@ -78,6 +78,12 @@ export default {
           label: 'User Management',
           icon: 'fa-users',
           open: false
+        },
+        {
+          link: this.$router.options.routes.find((route) => route.name === 'Feedback'),
+          label: 'Feedback',
+          icon: 'fa-comments',
+          open: false
         }
       ],
       profile: {
