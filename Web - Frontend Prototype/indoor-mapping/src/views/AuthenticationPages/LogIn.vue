@@ -1,8 +1,10 @@
 <template>
+  <!-- eslint-disable vue/no-v-model-argument -->
   <form action="" class="flex flex-col">
     <!-- Email -->
     <Field
       f_id="signIn_Email"
+      v-model:f_value="input.email"
       f_label="Email"
       f_type="text"
       f_placeholder="Enter your email"
@@ -11,6 +13,7 @@
     <!-- Password -->
     <Field
       f_id="signIn_Password"
+      v-model:f_value="input.password"
       f_label="Password"
       f_type="password"
       f_placeholder="Enter your password"
@@ -26,7 +29,7 @@
   <div>
     <button
       class="w-full rounded-md mt-8 p-2 bg-red-700 text-white font-bold"
-      @click="$emit('logIn')"
+      @click="handleLogin()"
     >
       Log in (Test)
     </button>
@@ -48,10 +51,19 @@ export default {
   },
   data() {
     return {
+      input: {
+        email: '',
+        password: ''
+      },
       route_SignUp: this.$router.options.routes.find((route) => route.name === 'SignUp'),
       route_PasswordReset: this.$router.options.routes.find(
         (route) => route.name === 'PasswordReset'
       )
+    }
+  },
+  methods: {
+    handleLogin() {
+      this.$emit('logIn')
     }
   }
 }

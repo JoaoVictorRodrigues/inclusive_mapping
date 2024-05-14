@@ -31,6 +31,10 @@ export default {
           label: 'Map Overview'
         },
         {
+          link: this.$router.options.routes.find((route) => route.name === 'PathManagement'),
+          label: 'Path Management'
+        },
+        {
           link: this.$router.options.routes.find((route) => route.name === 'Beacons'),
           label: 'Beacon Management'
         },

@@ -1,7 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router"
 import Map from '../views/SubPages/Map.vue'
 import UserManagement from '../views/SubPages/UserManagement.vue'
-import SignPage from "@/views/AuthenticationPages/SignPage.vue"
+import BeaconManagement from "@/views/SubPages/BeaconManagement.vue"
+import PathManagement from '../views/SubPages/PathManagement.vue'
 import LogIn from "@/views/AuthenticationPages/LogIn.vue"
 import SignUp from "@/views/AuthenticationPages/SignUp.vue"
 import PasswordReset from "@/views/AuthenticationPages/PasswordReset.vue"
@@ -38,9 +39,14 @@ const routes = [
         component: UserManagement
     },
     {
+        path: '/pathManagement',
+        name: 'PathManagement',
+        component: PathManagement
+    },
+    {
         path: '/Beacons',
         name: 'Beacons',
-        component: Map
+        component: BeaconManagement
     }
 ]
 

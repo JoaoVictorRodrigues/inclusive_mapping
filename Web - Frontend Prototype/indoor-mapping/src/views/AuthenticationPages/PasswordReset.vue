@@ -1,4 +1,5 @@
 <template>
+  <!-- eslint-disable vue/no-v-model-argument -->
   <form action="" class="flex flex-col">
     <p class="text-left">
       A <b>reset link</b> will be sent to your email, please <b>enter your email address below:</b>
@@ -6,6 +7,7 @@
     <!-- Email -->
     <Field
       f_id="signIn_Email"
+      v-model:f_value="input.email"
       f_label="Email"
       f_type="text"
       f_placeholder="Enter your email"
@@ -38,6 +40,9 @@ export default {
   },
   data() {
     return {
+      input: {
+        email: ''
+      },
       route_SignUp: this.$router.options.routes.find((route) => route.name === 'SignUp')
     }
   }

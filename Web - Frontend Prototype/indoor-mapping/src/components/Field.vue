@@ -10,6 +10,8 @@
         :type="f_type"
         :name="f_id"
         :placeholder="f_placeholder"
+        :value="f_value"
+        @input="$emit('update:f_value', $event.target.value)"
       />
       <i v-if="f_icon" :class="'fa ' + f_icon + ' fieldIcon'"></i>
     </div>
@@ -20,15 +22,12 @@
 export default {
   props: {
     f_id: { type: String, required: true },
+    f_value: { required: true },
     f_label: { type: String, required: true },
     f_type: { type: String, required: true },
     f_placeholder: { type: String, default: '' },
     f_icon: { type: String, default: '' }
   },
-  methods: {
-    handleSideBar() {
-      this.showSideBar = !this.showSideBar
-    }
-  }
+  emits: ['update:f_value']
 }
 </script>

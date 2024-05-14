@@ -1,4 +1,5 @@
 <template>
+  <!-- eslint-disable vue/no-v-model-argument -->
   <div class="mx-72 mt-24">
     <div class="flex justify-start mb-4">
       <h3>User Management</h3>
@@ -10,6 +11,7 @@
         <Field
           class="w-full mr-12"
           f_id="userM_Name"
+          v-model:f_value="selected.name"
           f_label="Name"
           f_type="text"
           f_placeholder="Enter the user's name"
@@ -19,6 +21,7 @@
         <Field
           class="w-full"
           f_id="userM_Email"
+          v-model:f_value="selected.email"
           f_label="Email"
           f_type="text"
           f_placeholder="Enter the user's email"
@@ -28,10 +31,17 @@
       <div class="flex flex-row justify-end">
         <!-- Add User Button -->
         <button
-          class="w-48 rounded-md mt-8 p-2 bg-red-700 text-white font-bold"
-          @click="$emit('logIn')"
+          class="w-36 rounded-md mt-8 p-2 bg-red-700 text-white font-bold"
+          @click="handleAddOrUpdate()"
         >
-          Add User (Test)
+          {{ (selected.index === -1 ? 'Add' : 'Update') + ' User' }}
+        </button>
+        <button
+          v-if="selected.index !== -1"
+          class="w-24 rounded-md mt-8 p-2 ml-6 bg-gray-400 text-white font-bold"
+          @click="resetSelected()"
+        >
+          Cancel
         </button>
       </div>
     </div>
@@ -52,10 +62,15 @@
             <div class="col-span-5 text-left">{{ u.name }}</div>
             <div class="col-span-5 text-left">{{ u.email }}</div>
             <div class="col-span-2">
-              <button class="p-1 text-gray-400 text-2xl mr-4" @click="handleEdit()">
+              <button class="p-1 text-gray-400 text-2xl mr-4" @click="handleEdit(uIndex)">
                 <i class="fa fa-pencil"></i>
               </button>
-              <button class="p-1 text-red-700 text-2xl" @click="handleDelete()">
+              <button
+                class="p-1 text-2xl"
+                :class="selected.index !== -1 ? 'text-red-200' : 'text-red-700'"
+                @click="handleDelete(uIndex)"
+                :disabled="selected.index !== -1"
+              >
                 <i class="fa fa-trash"></i>
               </button>
             </div>
@@ -83,15 +98,44 @@ export default {
         { name: 'FirstName User4 LastName', email: 'u4@email.com' },
         { name: 'FirstName User5 LastName', email: 'u5@email.com' },
         { name: 'FirstName User6 LastName', email: 'u6@email.com' }
-      ]
+      ],
+      selected: {
+        index: -1,
+        name: '',
+        email: ''
+      }
     }
   },
   methods: {
-    handleEdit() {
-      //TODO edit user logic
+    resetSelected() {
+      this.selected = {
+        index: -1,
+        name: '',
+        email: ''
+      }
     },
-    handleDelete() {
+    handleAddOrUpdate() {
+      //TODO add/edit user logic
+      if (this.selected.index === -1) {
+        this.users.push({ name: this.selected.name, email: this.selected.email })
+      } else {
+        this.users[this.selected.index] = {
+          ...this.users[this.selected.index],
+          name: this.selected.name,
+          email: this.selected.email
+        }
+      }
+      this.resetSelected()
+    },
+    handleEdit(i) {
+      //TODO edit user logic
+      this.selected.index = i
+      this.selected.name = this.users[i].name
+      this.selected.email = this.users[i].email
+    },
+    handleDelete(i) {
       //TODO delete user logic
+      this.users.splice(i, 1)
     }
   }
 }

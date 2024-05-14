@@ -1,8 +1,10 @@
 <template>
+  <!-- eslint-disable vue/no-v-model-argument -->
   <form action="" class="flex flex-col">
     <!-- Name -->
     <Field
       f_id="signIn_Name"
+      v-model:f_value="input.name"
       f_label="Name"
       f_type="text"
       f_placeholder="Enter your name"
@@ -11,6 +13,7 @@
     <!-- Email -->
     <Field
       f_id="signIn_Email"
+      v-model:f_value="input.email"
       f_label="Email"
       f_type="text"
       f_placeholder="Enter your email"
@@ -19,6 +22,7 @@
     <!-- Password -->
     <Field
       f_id="signIn_Password"
+      v-model:f_value="input.password"
       f_label="Password"
       f_type="password"
       f_placeholder="Enter your password"
@@ -27,6 +31,7 @@
     <!-- Confirm Password -->
     <Field
       f_id="signIn_ConfirmPassword"
+      v-model:f_value="input.passwordConfirm"
       f_label="Confirm Password"
       f_type="password"
       f_placeholder="Confirm your password"
@@ -59,6 +64,12 @@ export default {
   },
   data() {
     return {
+      input: {
+        name: '',
+        email: '',
+        password: '',
+        passwordConfirm: ''
+      },
       route_logIn: this.$router.options.routes.find((route) => route.name === 'LogIn')
     }
   }
