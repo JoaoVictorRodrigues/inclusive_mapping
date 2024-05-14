@@ -47,6 +47,11 @@ const routes = [
         path: '/Beacons',
         name: 'Beacons',
         component: BeaconManagement
+    },
+    {
+        path: '/UserProfile',
+        name: 'UserProfile',
+        component: BeaconManagement
     }
 ]
 
