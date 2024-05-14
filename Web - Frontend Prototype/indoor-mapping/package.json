@@ -13,6 +13,7 @@
     "build-css": "tailwindcss build src/assets/base.css -o public/styles.css"
   },
   "dependencies": {
+    "axios": "^1.6.8",
     "ol": "^9.0.0",
     "ol-ext": "^4.0.17",
     "vue": "^3.4.21",

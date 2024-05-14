@@ -44,6 +44,8 @@
 
 <script>
 import Field from '../../components/Field.vue'
+import api from '../API/api'
+//import axios from 'axios'
 
 export default {
   components: {
@@ -62,8 +64,44 @@ export default {
     }
   },
   methods: {
-    handleLogin() {
-      this.$emit('logIn')
+    async handleLogin() {
+      const email = 'teste@email.com' //this.input.email
+      const password = 'teste' //this.input.password
+      const change = this.$emit
+
+      //Cheack if fields are not empty
+      if (email !== '' && password !== '') {
+        await api
+          .post(
+            '/users/login',
+            {
+              email: email,
+              password: password
+            },
+            {
+              headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json'
+              }
+            }
+          )
+          .then(async function (response) {
+            localStorage.setItem('token', response.data.accessToken)
+            localStorage.setItem('userID', response.data.id)
+            localStorage.setItem('type', response.data.type)
+            console.log(response.data)
+            //localStorage.setItem('password', password);
+            change('logIn')
+          })
+          .catch(function (error) {
+            alert(error)
+          })
+      } else {
+        alert('Missing fields! Fill them all in!')
+      }
+      //Test login
+      //teste@email.com
+      //teste
     }
   }
 }

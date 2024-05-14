@@ -82,7 +82,9 @@
 </template>
 
 <script>
+import { onMounted } from 'vue'
 import Field from '../../components/Field.vue'
+import api from '../API/api'
 
 export default {
   components: {
@@ -91,20 +93,36 @@ export default {
   data() {
     return {
       // TODO get users from API
-      users: [
-        { name: 'FirstName User1 LastName', email: 'u1@email.com' },
-        { name: 'FirstName User2 LastName', email: 'u2@email.com' },
-        { name: 'FirstName User3 LastName', email: 'u3@email.com' },
-        { name: 'FirstName User4 LastName', email: 'u4@email.com' },
-        { name: 'FirstName User5 LastName', email: 'u5@email.com' },
-        { name: 'FirstName User6 LastName', email: 'u6@email.com' }
-      ],
+      users: [],
       selected: {
         index: -1,
         name: '',
         email: ''
       }
     }
+  },
+  mounted() {
+    const token = localStorage.getItem('token')
+    var users = this.users
+    api
+      .get('/users', {
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then(function (response) {
+        for (var i = 0; i < response.data.user.length; i++) {
+          users.push(response.data.user[i])
+        }
+        //console.log(users)
+      })
+      .catch(function (error) {
+        alert(error)
+      })
+
+    //this.users = users
   },
   methods: {
     resetSelected() {
@@ -124,6 +142,31 @@ export default {
           name: this.selected.name,
           email: this.selected.email
         }
+        const token = localStorage.getItem('token')
+        var users = this.users
+        var i = this.selected.index
+
+        api
+          .put(
+            `/users/${users[i]._id}`,
+            {
+              name: users[i].name,
+              email: users[i].email
+            },
+            {
+              headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+                Authorization: `Bearer ${token}`
+              }
+            }
+          )
+          .then(function (res) {
+            console.log(res.data.msg)
+          })
+          .catch(function (error) {
+            alert(error)
+          })
       }
       this.resetSelected()
     },
@@ -134,8 +177,27 @@ export default {
       this.selected.email = this.users[i].email
     },
     handleDelete(i) {
+      var user = this.users[i]
+      var token = localStorage.getItem('token')
+
       //TODO delete user logic
       this.users.splice(i, 1)
+
+      console.log(user)
+      api
+        .delete(`/users/${user._id}`, {
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            Authorization: `Bearer ${token}`
+          }
+        })
+        .then(function (res) {
+          console.log(res.data.message)
+        })
+        .catch(function (error) {
+          alert(error)
+        })
     }
   }
 }
