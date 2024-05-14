@@ -1,157 +1,295 @@
-import React from 'react';
-import {Image, StyleSheet, Text, TouchableOpacity, View, TextInput } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, {useEffect, useState} from 'react';
+import {
+  Image,
+  Text,
+  TouchableOpacity,
+  View,
+  TextInput,
+  ActivityIndicator,
+  _ScrollView,
+  Alert,
+} from 'react-native';
+import {styles} from './css/StylesSheet';
+import {KeyboardAvoidingView} from 'react-native';
+import api from '../api';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 //Html
 const ProfilePage = ({navigation}: {navigation: any}) => {
-    return (
-        <View style={styles.page}>
-            <View style={styles.pageHeader}>
-                <Text style={styles.headerLabels} onPress={() => navigation.navigate("Home")}>Back</Text>
-                <Text style={styles.pageName}>Profile</Text>
-                <Text style={styles.headerLabels}>logout</Text>
-            </View>
-            <View style={styles.imageContainer}>
-                <View style={styles.icon}>
-                    <Image source={require('./images/img_01.png')} style={styles.profilePic}></Image>
-                </View>
-            </View>
-            <View style={styles.pageBody}>
-                <View style={styles.inputFieldContainer}>
-                    <View style={styles.inputField}>
-                      <Image id='userImg' source={require('./images/profile-user.png')} style={styles.imgIcon}></Image>
-                      <View style={{alignItems: 'flex-start', flexDirection: 'column'}}>
-                        <Text style={styles.inputLabel}>Name</Text>
-                        <TextInput id='inputName' value='Name FamilyName' editable={false} selectTextOnFocus={false} style={styles.inputText}></TextInput>
-                      </View>
-                    </View>
-                    <View style={styles.inputField}>
-                      <Image source={require('./images/lock.png')} style={styles.imgIcon}></Image>
-                      <View style={{alignItems: 'flex-start', flexDirection: 'column'}}>
-                        <Text style={styles.inputLabel}>Password</Text>
-                        <TextInput id='inputPass' secureTextEntry={true} value='12345678' editable={false} selectTextOnFocus={false} style={styles.inputText}></TextInput>
-                      </View>
-                    </View>
-                    <View style={styles.inputField}>
-                      <Image source={require('./images/email.png')} style={styles.imgIcon}></Image>
-                      <View style={{alignItems: 'flex-start', flexDirection: 'column'}}>
-                        <Text style={styles.inputLabel}>Email</Text>
-                        <TextInput id='inputEmail' value='Email@email.com' editable={false} selectTextOnFocus={false} style={styles.inputText}></TextInput>
-                      </View>
-                    </View>
-                </View>
-                <View style={styles.btnContainer}>
-                <TouchableOpacity id='btnChange' style={styles.btnGray}>
-                            <Text style={styles.btnLabel}>Change Information</Text>    
-                        </TouchableOpacity>
-                </View>
-            </View>
+  //Variables
+  let [email, setEmail] = useState('');
+  let [password, setPassword] = useState('');
+  let [userName, setName] = useState('');
+  const [postImage, setPostImage] = useState({myFile: ''});
+  let [isLoading, setIsLoading] = useState(true);
+  let [error, setError] = useState('');
+  let [edit, setEdit] = useState(false);
+  let [focus, setFocus] = useState(false);
+  const [focusedInput, setFocusedInput] = useState<string | null>(null);
+
+  const handleFocus = (inputName: string) => {
+    setFocus(true);
+    setFocusedInput(inputName);
+  };
+
+  const handleBlur = () => {
+    setFocus(false);
+    setFocusedInput(null);
+  };
+
+  //Test login
+  //Test18@test.pt
+  //1234567
+
+  // Get current user information
+  const getUser = async () => {
+    const userID = await AsyncStorage.getItem('userID');
+    const pass = await AsyncStorage.getItem('pass');
+
+    await api
+      .get(`/users/${userID}`, {
+        headers: {
+          Accept: 'aplication/json',
+          Authorization: `Bearer ${await AsyncStorage.getItem('token')}`,
+        },
+      })
+      .then(async function (response: {data: {user: any}}) {
+        setEmail(response.data.user.email);
+        setName(response.data.user.name);
+        setPassword(pass || '');
+        setIsLoading(false);
+      })
+      .catch(function (error: {
+        response: {data: {msg: React.SetStateAction<string>}};
+      }) {
+        console.error(error.response.data.msg);
+        setError('It was not possivel to retrive user information.');
+        setIsLoading(false);
+      });
+  };
+
+  //Image converter
+  function convertToBase64(file: any) {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.onload = () => {
+        resolve(fileReader.result);
+      };
+      fileReader.onerror = error => {
+        reject(error);
+      };
+    });
+  }
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+  };
+
+  const handleFileUpload = async (e: any) => {
+    const file = e.target.files[0];
+    const base64 = await convertToBase64(file);
+    setPostImage({...postImage, myFile: typeof base64});
+  };
+  // update loged user information
+  const SaveChanges = async () => {
+    setIsLoading(true);
+    const userID = await AsyncStorage.getItem('userID');
+
+    await api
+      .put(
+        `/users/${userID}`,
+        {
+          name: userName,
+          email: email,
+          password: password,
+        },
+        {
+          headers: {
+            Accept: 'aplication/json',
+            Authorization: `Bearer ${await AsyncStorage.getItem('token')}`,
+          },
+        },
+      )
+      .then(res => {
+        if (res.status === 200) {
+          console.log('Foi a actualisado as informações do utilizador ');
+        } else {
+          console.error('Something went wrong.');
+        }
+        setIsLoading(false);
+      })
+      .catch(function (error: {
+        response: {data: {msg: React.SetStateAction<string>}};
+      }) {
+        console.error(error.response.data.msg);
+        setError('It was not possivel to update user information.');
+        setIsLoading(false);
+      });
+  };
+
+  const ChangePage = (page: string) => {
+    navigation.navigate(page);
+  };
+
+  const ShowButtons = () => {
+    setEdit(true);
+  };
+
+  const HideButtons = () => {
+    setEdit(false);
+  };
+
+  const getContent = () => {
+    if (userName == '') getUser();
+
+    if (isLoading)
+      return (
+        <View>
+          <ActivityIndicator size="large" />
         </View>
+      );
+
+    if (error != '') {
+      return (
+        <View style={styles.errorMessage}>
+          <Text style={styles.errorLabel}>{error}</Text>
+          <TouchableOpacity
+            id="btnBackError"
+            style={styles.btnError}
+            onPress={() => ChangePage('Home')}>
+            <Text style={styles.btnLabel}>Back</Text>
+          </TouchableOpacity>
+        </View>
+      );
+    }
+
+    return (
+      <View style={styles.page}>
+        <View style={styles.pageHeader}>
+          <Text style={styles.headerLabels} onPress={() => ChangePage('Home')}>
+            Back
+          </Text>
+          <Text style={styles.pageName}>Profile</Text>
+          <Text style={styles.headerLabels}>logout</Text>
+        </View>
+        <View
+          style={[
+            styles.imageContainer,
+            !focus ? styles.first : styles.second,
+          ]}>
+          <TouchableOpacity
+            style={styles.icon}
+            disabled={edit}
+            onPress={handleSubmit}>
+            <Image
+              source={
+                postImage.myFile != ''
+                  ? postImage.myFile
+                  : require('./images/profile-user.png')
+              }
+              style={styles.profilePic}></Image>
+          </TouchableOpacity>
+        </View>
+        <View style={[styles.pageBody, !focus ? styles.second : styles.first]}>
+          <KeyboardAwareScrollView>
+            <View style={styles.inputFieldContainer}>
+              <View style={styles.inputField}>
+                <Image
+                  id="userImg"
+                  source={require('./images/profile-user.png')}
+                  style={styles.imgIcon}></Image>
+                <View
+                  style={{alignItems: 'flex-start', flexDirection: 'column'}}>
+                  <Text style={styles.inputLabel}>Name</Text>
+                  <TextInput
+                    style={[
+                      styles.inputText,
+                      focusedInput === 'name' && styles.focusedInput,
+                    ]}
+                    onChangeText={setName}
+                    value={userName}
+                    editable={edit}
+                    onFocus={() => handleFocus('name')}
+                    onBlur={handleBlur}
+                    selectTextOnFocus={false}></TextInput>
+                </View>
+              </View>
+              <View style={styles.inputField}>
+                <Image
+                  source={require('./images/lock.png')}
+                  style={styles.imgIcon}></Image>
+                <View
+                  style={{alignItems: 'flex-start', flexDirection: 'column'}}>
+                  <Text style={styles.inputLabel}>Password</Text>
+                  <TextInput
+                    style={[
+                      styles.inputText,
+                      focusedInput === 'password' && styles.focusedInput,
+                    ]}
+                    onChangeText={setPassword}
+                    value={password}
+                    editable={edit}
+                    onFocus={() => handleFocus('password')}
+                    onBlur={handleBlur}
+                    secureTextEntry={true}
+                    selectTextOnFocus={false}></TextInput>
+                </View>
+              </View>
+              <View style={styles.inputField}>
+                <Image
+                  source={require('./images/email.png')}
+                  style={styles.imgIcon}></Image>
+                <View
+                  style={{alignItems: 'flex-start', flexDirection: 'column'}}>
+                  <Text style={styles.inputLabel}>Email</Text>
+                  <TextInput
+                    style={[
+                      styles.inputText,
+                      focusedInput === 'email' && styles.focusedInput,
+                    ]}
+                    onChangeText={setEmail}
+                    value={email}
+                    editable={edit}
+                    onFocus={() => handleFocus('email')}
+                    onBlur={handleBlur}
+                    selectTextOnFocus={false}></TextInput>
+                </View>
+              </View>
+            </View>
+            {!edit ? (
+              <View id="btnContainer" style={styles.btnContainer}>
+                <TouchableOpacity
+                  id="btnChange"
+                  style={styles.btnGray}
+                  onPress={ShowButtons}>
+                  <Text style={styles.btnLabel}>Change Information</Text>
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <View id="btnContainer" style={styles.btnContainer}>
+                <TouchableOpacity
+                  id="btnSave"
+                  style={styles.btnEdit}
+                  onPress={SaveChanges}>
+                  <Text style={styles.btnLabel}>Save</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  id="btnCancel"
+                  style={styles.btnEdit}
+                  onPress={HideButtons}>
+                  <Text style={styles.btnLabel}>Cancel</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+          </KeyboardAwareScrollView>
+        </View>
+      </View>
     );
+  };
+
+  return getContent();
 };
 
-//CSS 
-const styles = StyleSheet.create({
-    page:{
-        flex:1,
-        backgroundColor: '#9A1A24'
-    },
-    pageHeader: {
-        flex: 0.5,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginLeft: 18,
-        marginRight: 14,
-        paddingTop: 58,
-        height: 36,
-        zIndex: 2
-    },
-    headerLabels: {
-        color: '#FFFFFF',
-        fontSize: 16
-    },
-    pageName: {
-        color: '#FFFFFF',
-        fontSize: 30,
-        fontWeight: 'bold'
-    },
-    imageContainer:{
-        flex: 0.7,
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-        zIndex: 3
-    },
-    icon: {
-        backgroundColor: '#FFFFFF',
-        width: 158,
-        height: 158,
-        borderRadius: 79,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    profilePic: {
-        width: 156,
-        height: 156,
-        borderRadius: 78
-    },
-    pageBody:{
-        flex: 3,
-        backgroundColor: '#FFFFFF',
-        alignItems: 'center',
-        zIndex: 1,
-    },
-    inputFieldContainer:{
-        flex: 3,
-        justifyContent: 'space-evenly',
-        marginTop: 59,
-        rowGap: 15
-
-    },
-    imgIcon: {
-        marginLeft: 28, 
-        marginRight: 9,
-        width: 55,
-        height: 55
-    },
-    inputHolder:{
-        
-    },
-    inputField:{
-        backgroundColor: '#E6E6E6', 
-        flexDirection: 'row',
-        alignItems: 'center',
-        width: 347, 
-        height: 80, 
-        borderRadius: 20
-    },
-    inputLabel:{
-        color: '#5B5B5B',
-        fontSize: 17,
-        marginTop: 16, 
-        marginLeft: 4
-
-    },
-    inputText:{
-        color: '#000000',
-        marginBottom: 16,
-        fontSize: 20,
-        width: 214
-    },
-    btnContainer: {
-        flex: 1,
-        backgroundColor: '#FFFFFF',
-        marginTop: 65
-    },
-    btnGray:{
-        backgroundColor: '#9A1A24',
-        borderRadius: 100,
-        width: 343,
-        height: 51,  
-        alignItems: 'center',
-        justifyContent: 'center'        
-    },
-    btnLabel:{
-        color: '#FFFFFF'
-    }
-})
-
-export default ProfilePage
+export default ProfilePage;
