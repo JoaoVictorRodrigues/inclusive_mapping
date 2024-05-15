@@ -55,7 +55,7 @@
             class="fa fa-caret-up text-white text-2xl absolute -bottom-3 w-full"
           ></i>
         </div>
-        <p class="justify-self-center text-white text-base font-bold mr-4">Logged In User's Name</p>
+        <p class="justify-self-center text-white text-base font-bold mr-4">Logged In {{this.username}}</p>
       </router-link>
     </div>
   </div>
@@ -63,6 +63,8 @@
 </template>
 
 <script>
+import api from '../views/API/api'
+
 export default {
   data() {
     return {
@@ -103,7 +105,8 @@ export default {
         label: 'User Profile',
         icon: 'fa-users',
         open: false
-      }
+      },
+      username: ''
     }
   },
   methods: {
@@ -120,11 +123,40 @@ export default {
     closeRoutes() {
       this.routes.forEach((element) => (element.open = false))
       this.profile.open = true
+    },
+    async getUserInfo() {
+      const token = localStorage.getItem('token')
+      const userID = localStorage.getItem('userID')
+
+      await api
+        .get(`/users/${userID}`, {
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            Authorization: `Bearer ${token}`
+          }
+        })
+        .then(await function (response) {
+          console.log(response.data)
+          localStorage.setItem('username', response.data.user.name)
+          localStorage.setItem('email',response.data.user.email)
+        })
+        .catch(function (error) {
+          alert(error)
+        })
     }
   },
   beforeMount() {
     this.$router.push({ name: 'Map' })
     this.routes.find((route) => route.link.name === 'Map').open = true
+  },
+  mounted() {
+    if (localStorage.getItem('username') === null || localStorage.getItem('email') === null) {
+      this.getUserInfo()
+    }
+  },
+  updated() {
+    this.username = localStorage.getItem('username')
   }
 }
 </script>

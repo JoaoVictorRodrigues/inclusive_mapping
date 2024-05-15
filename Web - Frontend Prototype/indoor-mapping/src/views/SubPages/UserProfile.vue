@@ -119,31 +119,10 @@ export default {
     }
   },
   mounted() {
-    this.getUserInfo()
+    this.profileInfo.name = localStorage.getItem('username')
+    this.profileInfo.email = localStorage.getItem('email')
   },
   methods: {
-    async getUserInfo() {
-      const token = localStorage.getItem('token')
-      const userID = localStorage.getItem('userID')
-      var info = this.profileInfo
-
-      await api
-        .get(`/users/${userID}`, {
-          headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-            Authorization: `Bearer ${token}`
-          }
-        })
-        .then(function (response) {
-          console.log(response.data)
-          info.name = response.data.user.name
-          info.email = response.data.user.email
-        })
-        .catch(function (error) {
-          alert(error)
-        })
-    },
     startInfoChange() {
       this.edit = !this.edit
       this.previousInfo = JSON.parse(JSON.stringify(this.profileInfo))
@@ -156,8 +135,11 @@ export default {
       if (JSON.stringify(this.previousInfo) !== JSON.stringify(this.profileInfo)) {
         var response = this.saveUserChanges()
         console.log(response)
+        
+        localStorage.setItem('email', this.profileInfo.email)
+        localStorage.setItem('username', this.profileInfo.name)
       } else {
-        alert("Same values!!")
+        alert('Same values!!')
       }
     },
     async saveUser() {
