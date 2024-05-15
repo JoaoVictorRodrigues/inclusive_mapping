@@ -55,7 +55,9 @@
             class="fa fa-caret-up text-white text-2xl absolute -bottom-3 w-full"
           ></i>
         </div>
-        <p class="justify-self-center text-white text-base font-bold mr-4">Logged In {{this.username}}</p>
+        <p class="justify-self-center text-white text-base font-bold mr-4">
+          Logged In {{ this.username }}
+        </p>
       </router-link>
     </div>
   </div>
@@ -136,11 +138,14 @@ export default {
             Authorization: `Bearer ${token}`
           }
         })
-        .then(await function (response) {
-          console.log(response.data)
-          localStorage.setItem('username', response.data.user.name)
-          localStorage.setItem('email',response.data.user.email)
-        })
+        .then(
+          await function (response) {
+            console.log(response.data)
+            localStorage.setItem('username', response.data.user.name)
+            localStorage.setItem('email', response.data.user.email)
+            this.username = response.data.user.name
+          }
+        )
         .catch(function (error) {
           alert(error)
         })
@@ -153,10 +158,13 @@ export default {
   mounted() {
     if (localStorage.getItem('username') === null || localStorage.getItem('email') === null) {
       this.getUserInfo()
+    } else {
+      this.username = localStorage.getItem('username')
     }
+    //this.getUserInfo()
   },
   updated() {
-    this.username = localStorage.getItem('username')
+    //this.username = localStorage.getItem('username')
   }
 }
 </script>

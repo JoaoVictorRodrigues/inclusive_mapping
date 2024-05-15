@@ -91,9 +91,29 @@
           <p class="basis-3/5 text-start">
             Deleting your account permanently remove all your data and it cannot be reversed.
           </p>
-          <button class="basis-2/5 w-24 rounded-md p-2 bg-red-700 text-white font-bold text">
-            Delete Account
-          </button>
+          <div class="flex flex-row justify-between items-start">
+            <button
+              v-if="!this.deleteUser"
+              class="basis-2/5 w-24 rounded-md p-2 bg-red-700 text-white font-bold text"
+              @click="this.deleteUser = true"
+            >
+              Delete Account
+            </button>
+            <button
+              v-if="this.deleteUser"
+              class="basis-2/5 w-24 rounded-md p-2 bg-red-700 text-white font-bold text mr-6"
+              @click="DeleteAcount"
+            >
+              Are You sure
+            </button>
+            <button
+              v-if="this.deleteUser"
+              class="basis-2/5 w-24 rounded-md p-2 bg-gray-700 text-black font-bold text"
+              @click="this.deleteUser = false"
+            >
+              Cancel
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -115,7 +135,8 @@ export default {
       img: '',
       profileInfo: { name: '', email: '' },
       previousInfo: null,
-      edit: true
+      edit: true,
+      deleteUser: false
     }
   },
   mounted() {
@@ -131,13 +152,15 @@ export default {
       this.edit = !this.edit
       this.profileInfo = JSON.parse(JSON.stringify(this.previousInfo))
     },
-    saveUserChanges() {
+    async saveUserChanges() {
       if (JSON.stringify(this.previousInfo) !== JSON.stringify(this.profileInfo)) {
-        var response = this.saveUserChanges()
+        var response = await this.saveUser()
         console.log(response)
-        
+
         localStorage.setItem('email', this.profileInfo.email)
         localStorage.setItem('username', this.profileInfo.name)
+
+        this.edit = !this.edit
       } else {
         alert('Same values!!')
       }
@@ -146,24 +169,53 @@ export default {
       const token = localStorage.getItem('token')
       const userID = localStorage.getItem('userID')
 
-      return await api
-        .put(`/users/${userID}`, {
+      await api
+        .put(
+          `/users/${userID}`,
+          {
+            name: this.profileInfo.name,
+            email: this.profileInfo.email
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Accept: 'application/json',
+              Authorization: `Bearer ${token}`
+            }
+          }
+        )
+        .then(function (response) {
+          console.log(response)
+          return response.data.msg
+        })
+        .catch(function (error) {
+          return alert(error)
+        })
+    },
+    async DeleteAcount() {
+      //Variables
+      const id = localStorage.getItem('userID')
+      const token = localStorage.getItem('token')
+
+      //Call api
+      await api
+        .delete(`/users/${id}`, {
           headers: {
             'Content-Type': 'application/json',
             Accept: 'application/json',
             Authorization: `Bearer ${token}`
-          },
-          params: {
-            name: this.profileInfo.name,
-            email: this.profileInfo.email
           }
         })
-        .then(function (response) {
-          console.log(response.data)
+        .then(async function (res) {
+          console.log(res.data.message)
         })
-        .catch(function (error) {
-          alert(error)
+        .catch(async function (error) {
+          return alert(error)
         })
+
+      localStorage.clear()
+      //this.$router.push('/')
+      window.location.href = '/'
     }
   }
 }

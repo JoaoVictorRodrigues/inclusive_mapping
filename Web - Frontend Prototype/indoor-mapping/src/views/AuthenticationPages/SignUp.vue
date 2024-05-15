@@ -37,13 +37,24 @@
       f_placeholder="Confirm your password"
       f_icon="fa-lock"
     ></Field>
+    <!--Acessibility level-->
+    <div class="form-group">
+      <label for="userAccessibilityLvl">Accessibility Level</label>
+      <select
+        class="form-control"
+        name=""
+        id="userAccessibilityLvl"
+        v-model="input.AccessibilityLvl"
+      >
+        <option selected :value="0">No disability</option>
+        <option :value="1">Visual disability</option>
+        <option :value="2">Motor disability</option>
+      </select>
+    </div>
   </form>
   <!-- eslint-disable vue/no-multiple-template-root -->
   <div>
-    <button
-      class="w-full rounded-md mt-8 p-2 bg-red-700 text-white font-bold"
-      @click="$emit('signUp')"
-    >
+    <button class="w-full rounded-md mt-8 p-2 bg-red-700 text-white font-bold" @click="Register">
       Sign Up (Test)
     </button>
     <p class="m-4">
@@ -56,7 +67,10 @@
 </template>
 
 <script>
+//import func from 'vue-editor-bridge'
 import Field from '../../components/Field.vue'
+import api from '../API/api'
+//import LogIn from './LogIn.vue';
 
 export default {
   components: {
@@ -68,9 +82,84 @@ export default {
         name: '',
         email: '',
         password: '',
-        passwordConfirm: ''
+        passwordConfirm: '',
+        AccessibilityLvl: 0
       },
       route_logIn: this.$router.options.routes.find((route) => route.name === 'LogIn')
+    }
+  },
+  methods: {
+    async Register() {
+      console.log(this.input)
+      if (
+        this.input.name === '' ||
+        this.input.email === '' ||
+        this.input.password === '' ||
+        this.input.passwordConfirm === ''
+      )
+        return alert('You need to fill up the form')
+
+      if (this.input.password != this.input.passwordConfirm)
+        return alert('Confirm Password is diferent from Password')
+
+      console.log(this.input)
+
+      var user = this.input
+      var r = this
+      await api
+        .post(
+          '/users/register',
+          {
+            name: user.name,
+            email: user.email,
+            password: user.password,
+            AccessibilityLvl: user.AccessibilityLvl
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Accept: 'application/json'
+            }
+          }
+        )
+        .then(async function (res) {
+          console.log(res.data)
+          r.login()
+        })
+        .catch(async function (error) {
+          alert(error)
+        })
+    },
+    async login() {
+      var change = this.$emit
+      var name = this.input.name
+      var email = this.input.email
+
+      await api
+        .post(
+          '/users/login',
+          {
+            email: this.input.email,
+            password: this.input.password
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Accept: 'application/json'
+            }
+          }
+        )
+        .then(async function (response) {
+          localStorage.setItem('token', response.data.accessToken)
+          localStorage.setItem('userID', response.data.id)
+          localStorage.setItem('type', response.data.type)
+          localStorage.setItem('username', name)
+          localStorage.setItem('email', email)
+          change('logIn')
+        })
+        .catch(function (error) {
+          alert(error)
+        })
     }
   }
 }

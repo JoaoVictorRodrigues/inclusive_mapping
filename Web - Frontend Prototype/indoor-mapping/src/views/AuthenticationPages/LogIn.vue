@@ -65,8 +65,8 @@ export default {
   },
   methods: {
     async handleLogin() {
-      const email = 'teste@email.com' //this.input.email
-      const password = 'teste' //this.input.password
+      const email = 'admin@email.com' //this.input.email
+      const password = 'Admin' //this.input.password
       const change = this.$emit
 
       console.log('Loading')
@@ -87,11 +87,10 @@ export default {
             }
           )
           .then(async function (response) {
+            localStorage.clear()
             localStorage.setItem('token', response.data.accessToken)
             localStorage.setItem('userID', response.data.id)
             localStorage.setItem('type', response.data.type)
-            console.log(response.data)
-            //localStorage.setItem('password', password);
             change('logIn')
           })
           .catch(function (error) {

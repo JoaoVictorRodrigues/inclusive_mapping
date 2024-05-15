@@ -42,7 +42,10 @@
         </div>
         <!-- Row 2 -->
         <div class="flex flex-row">
-          <div class="basis-1/3 form-group flex flex-col mr-12 justify-center items-start" v-if="selected.index !== -1">
+          <div
+            class="basis-1/3 form-group flex flex-col mr-12 justify-center items-start"
+            v-if="selected.index !== -1"
+          >
             <label for="">User Type</label>
             <select
               class="custom-select w-full bg-white rounded-md shadow-lg p-1.5 border-opacity-100 border-2 border-gray-200"
@@ -54,7 +57,10 @@
               <option value="admin">admin</option>
             </select>
           </div>
-          <div class="basis-1/3 form-group flex flex-col mr-12 justify-center items-start" v-if="selected.index !== -1">
+          <div
+            class="basis-1/3 form-group flex flex-col mr-12 justify-center items-start"
+            v-if="selected.index !== -1"
+          >
             <label for="">Active User</label>
             <select
               class="custom-select w-full bg-white rounded-md shadow-lg p-1.5 border-opacity-100 border-2 border-gray-200"
@@ -74,9 +80,9 @@
               id="userS_AccessibilityLvl"
               v-model.number="selected.AccessibilityLvl"
             >
-              <option selected :value="0">0</option>
-              <option :value="1">1</option>
-              <option :value="2">2</option>
+              <option selected :value="0">No disability</option>
+              <option :value="1">Visual disability</option>
+              <option :value="2">Motor disability</option>
             </select>
           </div>
         </div>
