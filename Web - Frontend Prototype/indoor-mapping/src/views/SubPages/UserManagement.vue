@@ -141,7 +141,7 @@
 </template>
 
 <script>
-import { onMounted } from 'vue'
+//import { onMounted } from 'vue'
 import Field from '../../components/Field.vue'
 import api from '../API/api'
 
@@ -328,9 +328,6 @@ export default {
       var user = this.users[i]
       var token = localStorage.getItem('token')
 
-      //TODO delete user logic
-      this.users.splice(i, 1)
-
       await api
         .delete(`/users/${user._id}`, {
           headers: {
@@ -345,6 +342,9 @@ export default {
         .catch(async function (error) {
           alert(error)
         })
+
+      //TODO delete user logic
+      this.users.splice(i, 1)
     }
   }
 }

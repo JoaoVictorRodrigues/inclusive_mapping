@@ -7,69 +7,49 @@
     <!-- Add/Edit Beacon -->
     <div class="py-4 px-12 bg-white rounded-md shadow-lg">
       <form action="" class="flex flex-row justify-between">
-        <!-- Name -->
+        <!-- Location -->
         <Field
-          class="w-64"
-          f_id="beaconM_Name"
-          v-model:f_value="selected.name"
-          f_label="Name"
+          class="w-48"
+          f_id="beaconM_Location"
+          v-model:f_value="selected.locationType"
+          f_label="Location"
           f_type="text"
-          f_placeholder="Beacon's name"
-          f_icon="fa-tag"
+          f_placeholder="Hallway / Stairs / Elevator"
         ></Field>
-        <!-- Building -->
+        <!-- Cordenadas X -->
         <Field
-          class="w-12"
-          f_id="beaconM_Building"
-          v-model:f_value="selected.email"
-          f_label="Building"
-          f_type="text"
+          class="w-48"
+          f_id="beaconM_PositionX"
+          v-model:f_value="selected.position[0]"
+          f_label="Coordinates X"
+          f_type="number"
+          f_placeholder="0"
+        ></Field>
+        <!-- Cordenadas Y -->
+        <Field
+          class="w-48"
+          f_id="beaconM_PositionY"
+          v-model:f_value="selected.position[1]"
+          f_label="Coordinates Y "
+          f_type="number"
+          f_placeholder="0"
         ></Field>
         <!-- Floor -->
         <Field
           class="w-12"
           f_id="beaconM_Floor"
-          v-model:f_value="selected.email"
+          v-model:f_value="selected.floor"
           f_label="Floor"
-          f_type="text"
+          f_type="number"
         ></Field>
-        <!-- Location -->
-        <Field
-          class="w-48"
-          f_id="beaconM_Location"
-          v-model:f_value="selected.email"
-          f_label="Location"
-          f_type="text"
-          f_placeholder="Hallway / Stairs / Elevator"
-        ></Field>
-        <!-- Number -->
-        <Field
-          class="w-24"
-          f_id="beaconM_Number"
-          v-model:f_value="selected.email"
-          f_label="Number"
-          f_type="text"
-        ></Field>
-        <!-- Coords -->
-        <Field
-          class="w-64"
-          f_id="beaconM_Coords"
-          v-model:f_value="selected.email"
-          f_label="Coordinates"
-          f_type="text"
-          f_placeholder="41.17XXXX, -8.60XXXX"
-          f_icon="fa-map-marker"
-        ></Field>
-        <!-- Generated ID -->
-        <Field
-          class="w-36"
-          f_id="beaconM_GeneratedID"
-          v-model:f_value="selected.email"
-          f_label="Generated ID"
-          f_type="text"          
-          f_placeholder="YXF-W00X"
-          f_icon="fa-lock"
-        ></Field>
+        <!-- in Door-->
+        <div class="form-group flex flex-col">
+          <label for="beacon_InDoor">In Door</label>
+          <select class="form-control" name="" id="beacon_InDoor" v-model="selected.inDoor">
+            <option selected :value="false">out side</option>
+            <option :value="true">Inside</option>
+          </select>
+        </div>
       </form>
       <div class="flex flex-row justify-end">
         <!-- Add Beacon Button -->
@@ -92,11 +72,10 @@
     <div class="my-8 mx-8 bg-white rounded-md shadow-md overflow-hidden">
       <!-- Header -->
       <div class="grid grid-cols-12 py-4 px-12 border border-gray-300 border-collapse">
-        <b class="col-span-3 text-left">Name</b>
-        <b class="col-span-2 text-left">ID</b>
-        <b class="col-span-1 text-left">Building</b>
-        <b class="col-span-2 text-left">Location</b>
-        <b class="col-span-2 text-left">Status</b>
+        <b class="col-span-3 text-left">Location</b>
+        <b class="col-span-3 text-left">Coordenates</b>
+        <b class="col-span-2 text-left">floor</b>
+        <b class="col-span-2 text-left">In Door</b>
         <b class="col-span-1">Actions</b>
       </div>
       <!-- Body -->
@@ -105,12 +84,11 @@
           <div
             class="grid grid-cols-12 py-6 px-12 border-t border-collapse border-gray-300 items-center"
           >
-            <div class="col-span-3 text-left">{{ u.name }}</div>
-            <div class="col-span-2 text-left">{{ "B1F_S001" }}</div>
-            <div class="col-span-1 text-left">{{ "B" }}</div>
-            <div class="col-span-2 text-left">{{ "Stairs" }}</div>
-            <div class="col-span-2 text-left">{{ "Active" }}</div>
-            <div class="col-span-1">
+            <div class="col-span-3 text-left">{{ u.locationType }}</div>
+            <div class="col-span-3 text-left">{{ u.position[0] + ' ' + u.position[1] }}</div>
+            <div class="col-span-2 text-left">{{ u.floor }}</div>
+            <div class="col-span-2 text-left">{{ u.inDoor }}</div>
+            <div class="col-span-2">
               <button class="p-1 text-gray-400 text-2xl mr-4" @click="handleEdit(uIndex)">
                 <i class="fa fa-pencil"></i>
               </button>
@@ -132,7 +110,7 @@
 
 <script>
 import Field from '../../components/Field.vue'
-
+import api from '../API/api'
 export default {
   components: {
     Field
@@ -140,49 +118,160 @@ export default {
   data() {
     return {
       // TODO get beacons from API
-      beacons: [
-        { name: 'FirstName Beacon1 LastName', email: 'u1@email.com' },
-        { name: 'FirstName Beacon2 LastName', email: 'u2@email.com' },
-        { name: 'FirstName Beacon3 LastName', email: 'u3@email.com' },
-        { name: 'FirstName Beacon4 LastName', email: 'u4@email.com' },
-        { name: 'FirstName Beacon5 LastName', email: 'u5@email.com' },
-        { name: 'FirstName Beacon6 LastName', email: 'u6@email.com' }
-      ],
+      beacons: [],
       selected: {
         index: -1,
-        name: '',
-        email: ''
+        _id: '',
+        position: [0, 0],
+        floor: 0,
+        locationType: '',
+        inDoor: false
       }
     }
+  },
+
+  async mounted() {
+    const token = localStorage.getItem('token')
+    var becaons = this.beacons
+
+    await api
+      .get('/beacons', {
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then(async function (response) {
+        for (var i = 0; i < response.data.beacon.length; i++) {
+          becaons.push(response.data.beacon[i])
+        }
+      })
+      .catch(async function (error) {
+        alert(error)
+      })
+
+    console.log(this.beacons)
   },
   methods: {
     resetSelected() {
       this.selected = {
         index: -1,
-        name: '',
-        email: ''
+        _id: '',
+        position: [0, 0],
+        floor: 0,
+        locationType: '',
+        inDoor: false
       }
     },
-    handleAddOrUpdate() {
+    async handleAddOrUpdate() {
+      const token = localStorage.getItem('token')
+      var id = ''
+
+      if (this.selected.locationType === '') return alert('Beacon Location needs to be fill')
+
       //TODO add/edit beacon logic
       if (this.selected.index === -1) {
-        this.beacons.push({ name: this.selected.name, email: this.selected.email })
+        //this.beacons.push({ name: this.selected.name, email: this.selected.email })
+
+        await api
+          .post(
+            '/beacons',
+            {
+              position: this.selected.position,
+              floor: this.selected.floor,
+              locationType: this.selected.locationType,
+              inDoor: this.selected.inDoor
+            },
+            {
+              headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+                Authorization: `Bearer ${token}`
+              }
+            }
+          )
+          .then(async function (response) {
+            id = response.data.URL.replace('/beacon/', '')
+          })
+          .catch(async function (error) {
+            alert(error)
+          })
+
+        if (id != '')
+          this.beacons.push({
+            _id: id,
+            position: this.selected.position,
+            floor: this.selected.floor,
+            locationType: this.selected.locationType,
+            inDoor: this.selected.inDoor
+          })
       } else {
         this.beacons[this.selected.index] = {
           ...this.beacons[this.selected.index],
-          name: this.selected.name,
-          email: this.selected.email
+          _id: this.selected._id,
+          position: this.selected.position,
+          floor: this.selected.floor,
+          locationType: this.selected.locationType,
+          inDoor: this.selected.inDoor
         }
+
+        const beacon = this.beacons[this.selected.index]
+
+        await api
+          .put(
+            `/beacons/${beacon._id}`,
+            {
+              position: beacon.position,
+              floor: beacon.floor,
+              locationType: beacon.locationType,
+              inDoor: beacon.inDoor
+            },
+            {
+              headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+                Authorization: `Bearer ${token}`
+              }
+            }
+          )
+          .then(async function (response) {
+            console.log(response.data.msg)
+          })
+          .catch(async function (error) {
+            alert(error)
+          })
       }
       this.resetSelected()
     },
     handleEdit(i) {
       //TODO edit beacon logic
       this.selected.index = i
-      this.selected.name = this.beacons[i].name
-      this.selected.email = this.beacons[i].email
+      this.selected._id = this.beacons[i]._id
+      this.selected.locationType = this.beacons[i].locationType
+      this.selected.position = this.beacons[i].position
+      this.selected.floor = this.beacons[i].floor
+      this.selected.inDoor = this.beacons[i].inDoor
     },
-    handleDelete(i) {
+    async handleDelete(i) {
+      const token = localStorage.getItem('token')
+
+      console.log(`/beacons/${this.beacons[i]._id}`)
+      await api
+        .delete(`/beacons/${this.beacons[i]._id}`, {
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            Authorization: `Bearer ${token}`
+          }
+        })
+        .then(async function (response) {
+          console.log(response.data.message)
+        })
+        .catch(async function (error) {
+          alert(error)
+        })
+
       //TODO delete beacon logic
       this.beacons.splice(i, 1)
     }
