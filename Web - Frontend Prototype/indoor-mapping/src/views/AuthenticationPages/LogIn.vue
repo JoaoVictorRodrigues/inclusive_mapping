@@ -69,6 +69,7 @@ export default {
       const password = 'teste' //this.input.password
       const change = this.$emit
 
+      console.log('Loading')
       //Cheack if fields are not empty
       if (email !== '' && password !== '') {
         await api
