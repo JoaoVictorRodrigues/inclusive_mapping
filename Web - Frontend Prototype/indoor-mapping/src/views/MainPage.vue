@@ -4,23 +4,29 @@
     <!--NavBar Title-->
     <div class="basis-1/6 hidden sm:flex sm:flex-row">
       <img class="hidden sm:block w-32 object-cover h-full" src="/images/ISEP_redLogo.jpg" alt="" />
-      <p class="hidden lg:block self-center text-white text-base font-bold mr-2">Indoor Mapping</p>
+      <p class="hidden lg:block self-center text-white text-base font-bold ml-7">Indoor Mapping</p>
     </div>
     <!--NavBar Buttons-->
     <div class="basis-3/5 flex flex-row w-3/4 sm:w-3/5 items-center justify-start">
       <router-link
-        v-for="route in routes"
+        v-for="(route, i) in routes"
         :key="route.link.path"
         :to="route.link.path"
-        class="basis-auto mx-4 border-x-4 border-navBarHover px-4 h-full"
-        :class="route.open ? 'w-60 bg-navBarHover' : 'w-20'"
+        class="basis-auto border-r-2 border-navBarHover px-4 h-full"
+        :class="(route.open ? 'w-60 bg-navBarHover' : 'w-20') + (i === 0 ? ' border-l-2' : '')"
         @click="closeButtonNav(route)"
       >
-        <div class="relative flex flex-row items-center justify-start h-full w-full">
-          <i :class="'fa ' + route.icon + ' fieldIcon '"></i>
+        <div class="relative flex flex-row items-center justify-center h-full w-full">
+          <div class="flex flex-col h-full justify-center relative">
+            <i :class="'fa ' + route.icon + ' text-white text-2xl'"></i>
+            <i
+              v-if="route.open"
+              class="fa fa-caret-up text-white text-2xl absolute -bottom-3 w-full"
+            ></i>
+          </div>
           <p
             v-if="route.open"
-            class="hidden sm:block justify-self-center text-white text-base font-bold ml-10"
+            class="hidden sm:block justify-self-center text-white text-base font-bold ml-4"
           >
             {{ route.label }}
           </p>
@@ -38,12 +44,18 @@
         @click="closeRoutes()"
       >
         <!--Image-->
-        <img
-          class="w-12 h-12 p-1 rounded-full justify-self-center mr-2"
-          src="/images/default_avatar.png"
-          alt=""
-        />
-        <p class="justify-self-center text-white text-base font-bold mr-4">Name</p>
+        <div class="flex flex-col h-full justify-center relative">
+          <img
+            class="w-12 h-12 p-1 rounded-full justify-self-center mx-2"
+            src="/public/images/default_avatar.png"
+            alt=""
+          />
+          <i
+            v-if="profile.open"
+            class="fa fa-caret-up text-white text-2xl absolute -bottom-3 w-full"
+          ></i>
+        </div>
+        <p class="justify-self-center text-white text-base font-bold mr-4">Logged In User's Name</p>
       </router-link>
     </div>
   </div>
