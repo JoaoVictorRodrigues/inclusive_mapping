@@ -4,7 +4,7 @@
     <!--NavBar Title-->
     <div class="basis-1/6 hidden sm:flex sm:flex-row">
       <img class="hidden sm:block w-32 object-cover h-full" src="/images/ISEP_redLogo.jpg" alt="" />
-      <p class="hidden lg:block self-center text-white text-base font-bold ml-7">Indoor Mapping</p>
+      <p class="hidden lg:block self-center text-white text-base font-bold ml-4">Indoor Mapping</p>
     </div>
     <!--NavBar Buttons-->
     <div class="basis-3/5 flex flex-row w-3/4 sm:w-3/5 items-center justify-start">
