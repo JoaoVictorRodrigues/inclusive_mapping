@@ -88,7 +88,7 @@
             <div class="col-span-3 text-left">{{ u.position[0] + ' ' + u.position[1] }}</div>
             <div class="col-span-2 text-left">{{ u.floor }}</div>
             <div class="col-span-2 text-left">{{ u.inDoor }}</div>
-            <div class="col-span-2">
+            <div class="col-span-1">
               <button class="p-1 text-gray-400 text-2xl mr-4" @click="handleEdit(uIndex)">
                 <i class="fa fa-pencil"></i>
               </button>
@@ -132,7 +132,7 @@ export default {
 
   async mounted() {
     const token = localStorage.getItem('token')
-    var becaons = this.beacons
+    var beacons = this.beacons
 
     await api
       .get('/beacons', {
@@ -144,7 +144,7 @@ export default {
       })
       .then(async function (response) {
         for (var i = 0; i < response.data.beacon.length; i++) {
-          becaons.push(response.data.beacon[i])
+          beacons.push(response.data.beacon[i])
         }
       })
       .catch(async function (error) {
