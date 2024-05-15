@@ -2,7 +2,6 @@
 <template>
   <div>
     <div id="map"></div>
-    <!-- <Sidebar></Sidebar> -->
   </div>
 </template>
 
@@ -10,7 +9,6 @@
 import 'ol/ol.css'
 import Point from 'ol/geom/Point.js'
 import { Icon, Style } from 'ol/style.js'
-import { fromLonLat } from 'ol/proj.js'
 import Map from 'ol/Map'
 import View from 'ol/View'
 import Feature from 'ol/Feature.js'
@@ -18,12 +16,7 @@ import { defaults as defaultControls, ScaleLine } from 'ol/control'
 import { Tile as TileLayer, Vector as VectorLayer } from 'ol/layer'
 import { OSM, Vector as VectorSource } from 'ol/source'
 
-import Sidebar from '../../components/Sidebar.vue'
-
 export default {
-  components: {
-    Sidebar
-  },
   data() {
     return {
       map: undefined
@@ -82,13 +75,13 @@ export default {
         view: new View({
           projection: 'EPSG:4326',
           center: [long, lat],
-          zoom: 19
-          // extent: [
-          //   long - extentMargin,
-          //   lat - extentMargin / widthHeightRatio,
-          //   long + extentMargin,
-          //   lat + extentMargin / widthHeightRatio
-          // ]
+          zoom: 19,
+          extent: [
+            long - extentMargin,
+            lat - extentMargin / widthHeightRatio,
+            long + extentMargin,
+            lat + extentMargin / widthHeightRatio
+          ]
         })
       })
     }
