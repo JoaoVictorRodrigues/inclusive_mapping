@@ -87,10 +87,11 @@ export default {
             }
           )
           .then(async function (response) {
-            localStorage.clear()
+            //localStorage.clear()
             localStorage.setItem('token', response.data.accessToken)
             localStorage.setItem('userID', response.data.id)
             localStorage.setItem('type', response.data.type)
+            localStorage.setItem('password', password)
             change('logIn')
           })
           .catch(function (error) {

@@ -129,6 +129,7 @@ export default {
     async getUserInfo() {
       const token = localStorage.getItem('token')
       const userID = localStorage.getItem('userID')
+      const r = this
 
       await api
         .get(`/users/${userID}`, {
@@ -138,15 +139,15 @@ export default {
             Authorization: `Bearer ${token}`
           }
         })
-        .then(
-          await function (response) {
-            console.log(response.data)
-            localStorage.setItem('username', response.data.user.name)
-            localStorage.setItem('email', response.data.user.email)
-            this.username = response.data.user.name
-          }
-        )
-        .catch(function (error) {
+        .then(async function (response) {
+          console.log(response.data)
+          var name = response.data.user.name
+          localStorage.setItem('username', response.data.user.name)
+          localStorage.setItem('email', response.data.user.email)
+          console.log(name)
+          r.userName = response.data.user.name
+        })
+        .catch(async function (error) {
           alert(error)
         })
     }

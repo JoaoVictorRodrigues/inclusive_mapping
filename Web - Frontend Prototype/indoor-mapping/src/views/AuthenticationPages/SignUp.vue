@@ -134,13 +134,14 @@ export default {
       var change = this.$emit
       var name = this.input.name
       var email = this.input.email
+      var password = this.input.password
 
       await api
         .post(
           '/users/login',
           {
-            email: this.input.email,
-            password: this.input.password
+            email: email,
+            password: password
           },
           {
             headers: {
@@ -155,6 +156,8 @@ export default {
           localStorage.setItem('type', response.data.type)
           localStorage.setItem('username', name)
           localStorage.setItem('email', email)
+          localStorage.setItem('password', password)
+
           change('logIn')
         })
         .catch(function (error) {

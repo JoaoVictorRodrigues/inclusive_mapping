@@ -2,8 +2,19 @@
   <!-- eslint-disable vue/no-v-model-argument -->
   <form action="" class="flex flex-col">
     <p class="text-left">
-      A <b>reset link</b> will be sent to your email, please <b>enter your email address below:</b>
+      To <b>reset password</b>, you will need to enter your<b>
+        Name, email address, New Password and Confirm New Password below:</b
+      >
     </p>
+    <!-- Name -->
+    <Field
+      f_id="signIn_Name"
+      v-model:f_value="input.name"
+      f_label="Name"
+      f_type="text"
+      f_placeholder="Enter your name"
+      f_icon="fa-user-circle"
+    ></Field>
     <!-- Email -->
     <Field
       f_id="signIn_Email"
@@ -12,6 +23,24 @@
       f_type="text"
       f_placeholder="Enter your email"
       f_icon="fa-envelope-o"
+    ></Field>
+    <!-- Password -->
+    <Field
+      f_id="signIn_Password"
+      v-model:f_value="input.password"
+      f_label="New Password"
+      f_type="password"
+      f_placeholder="Enter your new password"
+      f_icon="fa-lock"
+    ></Field>
+    <!-- Confirm Password -->
+    <Field
+      f_id="signIn_ConfirmPassword"
+      v-model:f_value="input.passwordConfirm"
+      f_label="Confirm New Password"
+      f_type="password"
+      f_placeholder="Confirm your new password"
+      f_icon="fa-lock"
     ></Field>
   </form>
   <!-- eslint-disable vue/no-multiple-template-root -->
@@ -41,10 +70,16 @@ export default {
   data() {
     return {
       input: {
-        email: ''
+        name: '',
+        email: '',
+        password: '',
+        passwordConfirm: ''
       },
       route_SignUp: this.$router.options.routes.find((route) => route.name === 'SignUp')
     }
+  },
+  methods: {
+    ChangePassword() {}
   }
 }
 </script>

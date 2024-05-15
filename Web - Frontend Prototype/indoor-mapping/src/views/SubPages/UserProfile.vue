@@ -39,6 +39,16 @@
           f_icon="fa-envelope-o"
           :f_disabled="this.edit"
         ></Field>
+        <!-- Password -->
+        <Field
+          f_id="signIn_Password"
+          v-model:f_value="profileInfo.password"
+          f_label="Password"
+          f_type="password"
+          f_placeholder="Enter your password"
+          f_icon="fa-lock"
+          :f_disabled="this.edit"
+        ></Field>
       </form>
       <div class="flex flex-row justify-end">
         <!-- Add User Button -->
@@ -68,11 +78,11 @@
     </div>
     <!--Others-->
     <div class="grid grid-cols-2 gap-x-12 justify-between items-stretch">
-      <!--Reset Password-->
+      <!--Reset Password
       <div class="mt-12 py-4 px-12 bg-white rounded-md shadow-lg">
-        <!--title-->
+        title
         <h4 class="text-left text-2xl border-b-2 mb-4 pb-1">Reset Password</h4>
-        <!--Info-->
+        Info
         <div class="flex flex-row justify-between items-start">
           <p class="basis-3/5 text-start">
             An email will be sent to your account with the link to change your password.
@@ -81,7 +91,7 @@
             Send link
           </button>
         </div>
-      </div>
+      </div>-->
       <!--Delete User-->
       <div class="mt-12 py-4 px-12 bg-white rounded-md shadow-lg">
         <!--title-->
@@ -133,7 +143,7 @@ export default {
       hasImg: false,
       defImg: '/images/default_avatar.png',
       img: '',
-      profileInfo: { name: '', email: '' },
+      profileInfo: { name: '', email: '', password: '' },
       previousInfo: null,
       edit: true,
       deleteUser: false
@@ -142,6 +152,7 @@ export default {
   mounted() {
     this.profileInfo.name = localStorage.getItem('username')
     this.profileInfo.email = localStorage.getItem('email')
+    this.profileInfo.password = localStorage.getItem('password')
   },
   methods: {
     startInfoChange() {
@@ -153,6 +164,15 @@ export default {
       this.profileInfo = JSON.parse(JSON.stringify(this.previousInfo))
     },
     async saveUserChanges() {
+      if (
+        this.previousInfo.name === '' ||
+        this.previousInfo.email === '' ||
+        this.previousInfo.password === '' ||
+        this.previousInfo.name === ' ' ||
+        this.previousInfo.email === ' '
+      )
+        return alert("You can't have empty fields.")
+
       if (JSON.stringify(this.previousInfo) !== JSON.stringify(this.profileInfo)) {
         var response = await this.saveUser()
         console.log(response)
