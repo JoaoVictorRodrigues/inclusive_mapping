@@ -53,7 +53,7 @@ const Feedback = ({ navigation }: { navigation: any }) => {
                         style={styles.input}
                         onChangeText={setComment}
                         value={comment}
-                        placeholder="Your comments"
+                        placeholder={t("Your comments")}
                         placeholderTextColor="gray"
                     />
                     <View style={styles.starRating}>

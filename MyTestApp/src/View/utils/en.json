@@ -20,6 +20,21 @@
         "Already have an account?":"Already have an account?",
         "Thank You!":"Thank You!",
         "Your feedback is greatly appreciated.":"Your feedback is greatly appreciated.",
-        "Go to Home":"Go to Home"
+        "Go to Home":"Go to Home",
+        "Your comments":"Your comments",
+        "Confirm Password":"Confirm Password",
+        "User Name":"User Name",
+        "Select Accessibility":"Select Accessibility",
+        "No disability":"No disability",
+        "Visual disability":"Visual disability",
+        "Motor disability":"Motor disability",
+        "FAQ_Question_1":"",
+        "FAQ_Question_2":"",
+        "FAQ_Question_3":"",
+        "FAQ_Question_4":"",
+        "FAQ_Answer_1":"",
+        "FAQ_Answer_2":"",
+        "FAQ_Answer_3":"",
+        "FAQ_Answer_4":""
     }
 }

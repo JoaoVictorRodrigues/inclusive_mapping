@@ -9,6 +9,7 @@ import ProfilePage from './src/View/ProfileScreen';
 import Feedback from './src/View/Feedback';
 import ViewEntries from './src/View/ViewEntries';
 import ThankYouPage from './src/View/ThankYouPage';
+import FAQs from './src/View/FAQs';
 
 const Stack = createNativeStackNavigator();
 
@@ -23,6 +24,7 @@ const App = () => {
       <Stack.Screen options={{ headerShown: false }} name='Feedback' component={Feedback}></Stack.Screen>
       <Stack.Screen options={{ headerShown: false }} name='ViewEntries' component={ViewEntries}></Stack.Screen>
       <Stack.Screen options={{ headerShown: false }} name='ThankYouPage' component={ThankYouPage}></Stack.Screen>
+      <Stack.Screen options={{ headerShown: false }} name='FAQs' component={FAQs}></Stack.Screen>
     </Stack.Navigator>
   </NavigationContainer>
 };

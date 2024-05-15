@@ -1,55 +1,62 @@
 import React from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import './utils/i18n.js'
 import { useTranslation } from 'react-i18next';
 
-const HomePage = ({navigation}: {navigation: any}) => {
-    const { t, i18n } = useTranslation();
-    const changevalue = () => {
-        const newLang = i18n.language === 'en' ? 'pt' : 'en';
-        i18n.changeLanguage(newLang);
-        console.log(i18n.language);
-    }
+const FAQPage = ({navigation}: {navigation: any}) => {
+    const { t } = useTranslation();
+
     return (
         <View style={{ flex: 1, backgroundColor: 'black'}}>
             <View id='Header' style={styles.pageHeader}>
-                <Text style={styles.headerLabelsLeft}>{t('Back')}</Text>
-                <TouchableOpacity onPress={() => navigation.navigate('FAQs')}>
-                    <Text style={styles.headerLabelsRight}>'FAQs'</Text>
-                </TouchableOpacity>
+                <Text style={styles.headerLabelsLeft} onPress={() => navigation.goBack()}>{t('Back')}</Text>
                 <Text style={styles.headerLabelsRight} onPress={() => navigation.navigate('Feedback')}>Feedback</Text> 
                 <Text style={styles.headerLabelsRight}>Logout</Text>
-                <TouchableOpacity onPress={changevalue}>
-                    <Text style={styles.headerLabelsRight}>{i18n.language === 'en' ? 'PT' : 'EN'}</Text>
-                </TouchableOpacity>
             </View>
+            <ScrollView id='FAQContent' style={styles.faqContent}>
+                {/* Add your FAQ items here */}
+                <View style={styles.faqItem}>
+                    <Text style={styles.faqQuestion}>{t('FAQ_Question_1')}</Text>
+                    <Text style={styles.faqAnswer}>{t('FAQ_Answer_1')}</Text>
+                </View>
+                <View style={styles.faqItem}>
+                    <Text style={styles.faqQuestion}>{t('FAQ_Question_2')}</Text>
+                    <Text style={styles.faqAnswer}>{t('FAQ_Answer_2')}</Text>
+                </View>
+                <View style={styles.faqItem}>
+                    <Text style={styles.faqQuestion}>{t('FAQ_Question_3')}</Text>
+                    <Text style={styles.faqAnswer}>{t('FAQ_Answer_3')}</Text>
+                </View>
+                <View style={styles.faqItem}>
+                    <Text style={styles.faqQuestion}>{t('FAQ_Question_4')}</Text>
+                    <Text style={styles.faqAnswer}>{t('FAQ_Answer_4')}</Text>
+                </View>
+                {/* Repeat for more FAQ items */}
+            </ScrollView>
             <View id='ImageHolder' style={styles.imageHolder}>
                 <Image style={styles.schoolLogo} 
                     source={require('./images/pngegg.png')}></Image>
-            </View>
-            <View id='BtnContainer' 
-                  style={styles.btnContainer}>
-                    <View style={styles.whiteRect}>
-                        <TouchableOpacity style={styles.btnOrange} onPress={() => navigation.navigate("Map")}>
-                            <Text style={styles.btnLabelOrange}>{t('Map')}</Text>    
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.btnOrange} onPress={() => navigation.navigate("ViewEntries")}>
-                            <Text style={styles.btnLabelOrange}>{t('View Entries')}</Text>    
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.btnGray}>
-                            <Text style={styles.btnLabelGray}>{t('Virtual Diary')}</Text>    
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.btnOrange} onPress={() => navigation.navigate("Profile")}>
-                            <Text style={styles.btnLabelOrange}>{t('Profile')}</Text>    
-                        </TouchableOpacity>      
-                    </View> 
             </View>
         </View>
     );
 };
 
 const styles = StyleSheet.create({
-    pageHeader:{
+    faqContent: {
+        flex: 3,
+        paddingTop: 20,
+    },
+    faqItem: {
+        marginBottom: 20,
+        paddingHorizontal: 18,
+    },
+    faqQuestion: {
+        color: '#FFFFFF',
+        fontWeight: 'bold',
+    },
+    faqAnswer: {
+        color: '#FFFFFF',
+    },pageHeader:{
         flex: 0.5,
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -113,4 +120,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default HomePage
+export default FAQPage;
