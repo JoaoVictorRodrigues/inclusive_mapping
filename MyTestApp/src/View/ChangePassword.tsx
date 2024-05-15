@@ -1,15 +1,12 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import api from "../api/index.js";
-import './utils/i18n.js'
-import { useTranslation } from 'react-i18next';
 
-const Login = ({ navigation }: { navigation: any }) => {
-    const { t, i18n } = useTranslation();
+const ChangePassword = ({ navigation }: { navigation: any }) => {
     const [email, setEmail] = useState('');
+    const [name, setName] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [focusedInput, setFocusedInput] = useState<string | null>(null);
     const [errorMessage, setErrorMessage] = useState("");
     const [errorMessagePassword, setErrorMessagePassword] = useState("");
@@ -22,41 +19,48 @@ const Login = ({ navigation }: { navigation: any }) => {
         setFocusedInput(null);
     };
 
-    const login = async () => {
-        if (email !== "" && password !== "") {
-            await api.post(`/users/login`, {
-                email: email,
-                password: password,
-            })
-                .then(async function (response: { data: { accessToken: any; id: any; type: any; accessibilityLvl: any; }; }) {
-                    await AsyncStorage.setItem("token", response.data.accessToken);
-                    await AsyncStorage.setItem("userID", response.data.id);
-                    await AsyncStorage.setItem("type", response.data.type);
-                    await AsyncStorage.setItem('accessibilityLvl', response.data.accessibilityLvl.toString());
-                    navigation.navigate('Home')
-                })
-                .catch(function (error: { response: { data: { msg: React.SetStateAction<string>; }; }; }) {
-                    setErrorMessage(error.response.data.msg)
-                });
+    const confPassword = () => {
+        if (password === confirmPassword) {
+            return true;
         } else {
-            setErrorMessage("Missing fields! Fill them all in!")
+            return false;
         }
-
     }
 
-    const navigationRegister = () => {
-        navigation.navigate('Register')
-    }
+    const changePassword = async () => {
+        if (name == '' || email == '' || password == '' || confirmPassword == '') {
+            setErrorMessage("Missing fields! Fill them all in!")
+        } else {
+            setErrorMessage("")
+            if (confPassword()) {
+                setErrorMessagePassword("");
 
-    const navigationForgotPassword = () => {
-        navigation.navigate('ChangePassword')
+                try {
+                    const response = await api.patch(`/users?email=${email}`, {
+                        name: name,
+                        password: password,
+                    });
+                    console.log('Deu!');
+                    navigation.navigate('Login');
+                } catch (error) {
+                    if (error.response && error.response.data && error.response.data.msg) {
+                        setErrorMessage(error.response.data.msg);
+                    } else {
+                        setErrorMessage("An unexpected error occurred.");
+                    }
+                }
+            } else {
+                setErrorMessagePassword("The passwords are not the same!!");
+            }
+
+        }
     }
 
     return (
         <View style={styles.container}>
             <View id='Header' style={styles.pageHeader}>
-                <Text style={styles.title}>Login</Text>
-                <Text style={styles.headerText}>{t('Sign in to access your account')}</Text>
+                <Text style={styles.title}>Change Password</Text>
+                <Text style={styles.headerText}>Here you can recover your password!</Text>
             </View>
             <View id="Form" style={[styles.form]}>
                 <View style={styles.visible}>
@@ -70,25 +74,38 @@ const Login = ({ navigation }: { navigation: any }) => {
                         onBlur={handleBlur}
                     />
                     <TextInput
+                        style={[styles.input, focusedInput === 'name' && styles.focusedInput]}
+                        onChangeText={setName}
+                        value={name}
+                        placeholder="User Name"
+                        placeholderTextColor="gray"
+                        onFocus={() => handleFocus('name')}
+                        onBlur={handleBlur}
+                    />
+                    <TextInput
                         style={[styles.input, focusedInput === 'password' && styles.focusedInput]}
                         onChangeText={setPassword}
                         value={password}
-                        placeholder="Password"
+                        placeholder="New Password"
                         placeholderTextColor="gray"
                         secureTextEntry={true}
                         onFocus={() => handleFocus('password')}
                         onBlur={handleBlur}
                     />
-                    <TouchableOpacity style={styles.forgotPassword} onPress={navigationForgotPassword}>
-                        <Text style={styles.forgotPasswordText}>Forgot your password?</Text>
-                    </TouchableOpacity>
+                    <TextInput
+                        style={[styles.input, focusedInput === 'confirmPassword' && styles.focusedInput]}
+                        onChangeText={setConfirmPassword}
+                        value={confirmPassword}
+                        placeholder="Confirm New Password"
+                        placeholderTextColor="gray"
+                        secureTextEntry={true}
+                        onFocus={() => handleFocus('confirmPassword')}
+                        onBlur={handleBlur}
+                    />
                     <Text style={errorMessagePassword !== "" ? styles.errorMessage : styles.errorMessageDisable}>{errorMessagePassword}</Text>
                     <Text style={errorMessage !== "" ? styles.errorMessage : styles.errorMessageDisable}>{errorMessage}</Text>
-                    <TouchableOpacity style={styles.signInButton} onPress={login}>
-                        <Text style={styles.signInButtonText}>Sign In</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.link} onPress={navigationRegister}>
-                        <Text style={styles.linkText}>{t('Create new account')}</Text>
+                    <TouchableOpacity style={styles.signUpButton} onPress={changePassword}>
+                        <Text style={styles.signUpButtonText}>Change Password</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -142,15 +159,14 @@ const styles = StyleSheet.create({
     visible: {
         display: 'inline-block',
     },
-    signInButton: {
+    signUpButton: {
         marginTop: "5%",
         backgroundColor: '#9a1924',
         paddingVertical: 15,
         paddingHorizontal: 25,
         borderRadius: 5,
-
     },
-    signInButtonText: {
+    signUpButtonText: {
         color: 'white',
         fontWeight: 'bold',
         fontSize: 20,
@@ -161,34 +177,13 @@ const styles = StyleSheet.create({
         color: "red",
         opacity: 0.75,
         fontWeight: "bold",
-        display: "block",
+        display: "flex",
         textAlign: "center",
         marginBottom: 10
     },
     errorMessageDisable: {
         display: "none"
     },
-    link: {
-        marginTop: "15%"
-    },
-    linkText: {
-        color: "black",
-        textAlign: "center",
-        fontSize: 16,
-        fontStyle: "italic",
-        textDecorationLine: 'underline',
-    },
-    forgotPassword: {
-        marginTop: -10,
-    },
-    forgotPasswordText: {
-        color: "black",
-        textAlign: "right",
-        fontSize: 13,
-        fontStyle: "italic",
-        textDecorationLine: 'underline',
-    }
-
 });
 
-export default Login;
+export default ChangePassword;

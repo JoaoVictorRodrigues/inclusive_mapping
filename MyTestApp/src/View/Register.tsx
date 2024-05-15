@@ -65,7 +65,6 @@ const Register = ({ navigation }: { navigation: any }) => {
                     AccessibilityLvl: accessibility
                 })
                     .then(async function (response: { data: any; }) {
-                        console.log(response.data);
                         login()
                     })
                     .catch(function (error: { response: { data: { msg: React.SetStateAction<string>; }; }; }) {
@@ -102,7 +101,6 @@ const Register = ({ navigation }: { navigation: any }) => {
                         style={[styles.input, focusedInput === 'name' && styles.focusedInput]}
                         onChangeText={setName}
                         value={name}
-                        placeholder={t("User Name")}
                         placeholderTextColor="gray"
                         onFocus={() => handleFocus('name')}
                         onBlur={handleBlur}
@@ -121,7 +119,6 @@ const Register = ({ navigation }: { navigation: any }) => {
                         style={[styles.input, focusedInput === 'confirmPassword' && styles.focusedInput]}
                         onChangeText={setConfirmPassword}
                         value={confirmPassword}
-                        placeholder={t("Confirm Password")}
                         placeholderTextColor="gray"
                         secureTextEntry={true}
                         onFocus={() => handleFocus('confirmPassword')}
@@ -134,10 +131,6 @@ const Register = ({ navigation }: { navigation: any }) => {
                         onValueChange={(itemValue) => setAccessibility(itemValue)}
                         dropdownIconColor="#9a1924"
                     >
-                        <Picker.Item label={t("Select Accessibility")} value="" enabled={false} />
-                        <Picker.Item label={t("No disability")} value="0" />
-                        <Picker.Item label={t("Visual disability")} value="1" />
-                        <Picker.Item label={t("Motor disability")} value="2" />
                     </Picker>
                     <Text style={errorMessage !== "" ? styles.errorMessage : styles.errorMessageDisable}>{errorMessage}</Text>
                     <TouchableOpacity style={styles.signUpButton} onPress={register}>

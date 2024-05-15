@@ -18,12 +18,14 @@ const { width, height } = Dimensions.get('screen');
 
 const Map = ({ navigation }: { navigation: any }) => {
     const [selectBeacons, setSelectBeacons] = useState(''); ('');
-    const [userLocation, setUserLocation] = useState(null);
-    const [nearestEntry, setNearestEntry] = useState(null);
-    const [nearestStairsOrElevator, setNearestStairsOrElevator] = useState(null);
-    const [destination, setDestination] = useState(null);
+    const [userLocation, setUserLocation] = useState<object | null>(null);
+    const [nearestEntry, setNearestEntry] = useState<object | null>(null);
+    const [nearestStairsOrElevator, setNearestStairsOrElevator] = useState<object | null>(null);
+    const [destination, setDestination] = useState<object | null>(null);
     const [isStart, setIsStart] = useState(false)
     const [destiny, setDestiny] = useState("");
+    const [searchResults, setSearchResults] = useState([]);
+
 
     const region = {
         latitude: 41.17844,
@@ -37,59 +39,74 @@ const Map = ({ navigation }: { navigation: any }) => {
     const entriesISEP = [{
         latitude: 41.17882943953348,
         longitude: -8.606200017093682,
-        image: "https://paulorodrigues-isep.sirv.com/TASSI/Entrada_Carros_Este.png",
-        name: "East Car Entrance"
+        image: "https://paulorodrigues-isep.sirv.com/TASSI/Entrada_Estacionamente_Este_360.JPG",
+        name: "East Car Entrance",
+        description: "Car entrance for Isep students and teachers and for visitors (until 8:00 pm)"
     }, {
         latitude: 41.17845872325719,
         longitude: -8.60671239222479,
         image: "https://paulorodrigues-isep.sirv.com/TASSI/Entrada_E.png",
-        name: "Alternative Entrance - E"
+        name: "Alternative Entrance - E",
+        description: "Entrance to the ISEP campus through building E, to the east of the campus. Closes at 8pm"
     }, {
         latitude: 41.177265447670074,
         longitude: -8.608728016664339,
         image: "https://paulorodrigues-isep.sirv.com/TASSI/Entrada_G.png",
-        name: "Alternative Entrance - G"
+        name: "Alternative Entrance - G",
+        description: "Alternative entrance to the ISEP campus for those coming from the south of the campus"
     }, {
         latitude: 41.17810274173643,
         longitude: -8.609222148337787,
         image: "https://paulorodrigues-isep.sirv.com/TASSI/Entrada_H.png",
-        name: "Main Entrance"
+        name: "Main Entrance",
+        description: "Main entrance to the ISEP campus through building H. This entrance has a small park and a reception that closes at 11:30 pm"
     }, {
         latitude: 41.17880187874693,
         longitude: -8.609259818377929,
         image: "https://paulorodrigues-isep.sirv.com/TASSI/Entrada_Carros_Oeste.png",
-        name: "West Car Entrance"
+        name: "West Car Entrance",
+        description: "Main driveway, located west of the ISEP campus, for students and faculty."
     }]
 
     const BlockB = {
         entries: [{
             latitude: 41.17793516079107,
             longitude: -8.607817171758688,
-            name: "Main entrance - Block B"
+            name: "Main entrance - Block B",
+            description: "Main entrance to Block B",
+            image: "https://paulorodrigues-isep.sirv.com/TASSI/BlocoB_Entrada.jpg"
         }, {
             latitude: 41.17752190252769,
             longitude: -8.607872384067498,
-            name: "Alternative entrance - Block B"
+            name: "Alternative entrance - Block B",
+            description: "Alternative entrance to Block B. It is located between blocks G and B, under the point that connects them",
+            image: "https://paulorodrigues-isep.sirv.com/TASSI/BlocoB_Entrada_Alternativa.jpg"
         }],
         classrooms: [{
             classroom: "B404",
             latitude: 41.17779859734326,
             longitude: -8.60778236945829,
-            name: "B404"
+            name: "B404",
+            description: "Classroom B404, located on the 4th floor of block B. Classroom for multimedia classes",
+            image: "https://paulorodrigues-isep.sirv.com/TASSI/B404.jpg"
         }],
         stairs: [{
             latitude: 41.177934862829,
             longitude: -8.607774502873458,
-            name: "Main stairs - Block B"
+            name: "Main stairs - Block B",
+            description: "Main staircase of Block B, located right after the main entrance to Block B"
         }, {
             latitude: 41.17747023177218,
             longitude: -8.607831537419225,
-            name: "Alternative stairs - Block B"
+            name: "Alternative stairs - Block B",
+            description: "Alternative staircase to Block B, located just after the alternative entrance to block B"
         }],
         elevator: [{
             latitude: 41.17794222593095,
             longitude: -8.607742689503528,
-            name: "Elevator - Block B"
+            name: "Elevator - Block B",
+            image: "https://paulorodrigues-isep.sirv.com/TASSI/BlocoB_Elevador.jpg",
+            description: "Block B elevator, located right at the main entrance to block B and next to the main stairs"
         }]
     }
 
@@ -97,25 +114,39 @@ const Map = ({ navigation }: { navigation: any }) => {
         entries: [{
             latitude: 41.17900255554174,
             longitude: -8.606729063123415,
-            name: "Alternative entrance - Block C"
+            name: "Alternative entrance - Block C",
+            description: ""
         }, {
             latitude: 41.17864523026521,
             longitude: -8.607208507984893,
-            name: "Main entrance - Block C"
+            name: "Main entrance - Block C",
+            description: ""
         }],
         stairs: [{
             latitude: 41.17896350725777,
             longitude: -8.606906762058527,
-            name: "Stairs 1 - Block B"
+            name: "Stairs 1 - Block B",
+            description: ""
         }, {
             latitude: 41.178726804575106,
             longitude: -8.607149501974398,
-            name: "Stairs 2 - Block B"
+            name: "Stairs 2 - Block B",
+            description: ""
         }],
         elevator: [{
             latitude: 41.17879241521212,
             longitude: -8.607072388465197,
-            name: "Elevator - Block C"
+            name: "Elevator - Block C",
+            description: ""
+        }]
+    }
+
+    const BlockE = {
+        entries: [{
+            latitude: 41.17864776730567,
+            longitude: -8.607487133679149,
+            name: "Main entrance - Block J",
+            description: ""
         }]
     }
 
@@ -123,39 +154,46 @@ const Map = ({ navigation }: { navigation: any }) => {
         entries: [{
             latitude: 41.17864776730567,
             longitude: -8.607487133679149,
-            iconLink: require("./images/entry_icon.png"),
-            name: "Main entrance - Block J"
+            name: "Main entrance - Block J",
+            description: ""
         }, {
             latitude: 41.17814968871318,
             longitude: -8.608192664870705,
-            name: "Main entrance - Block I"
+            name: "Main entrance - Block I",
+            description: ""
         }],
         stairs: [{
             latitude: 41.17809417147981,
             longitude: -8.608104151973187,
-            name: "Main stairs - Block J"
+            name: "Main stairs - Block J",
+            description: ""
         }, {
             latitude: 41.17835711588376,
             longitude: -8.607517550653029,
-            name: "Main stairs - Block I"
+            name: "Main stairs - Block I",
+            description: ""
         }, {
             latitude: 41.1785995664709,
             longitude: -8.60744983140121,
-            name: "Alternative stairs - Block I and J"
+            name: "Alternative stairs - Block I and J",
+            description: ""
         }],
         elevator: [{
             latitude: 41.17832956462679,
             longitude: -8.607516635528016,
-            name: "Elevator - Block I"
+            name: "Elevator - Block I",
+            description: ""
         }, {
             latitude: 41.178090985842296,
             longitude: -8.608087534701143,
-            name: "Elevator - Block I and J"
+            name: "Elevator - Block I and J",
+            description: "",
+            image: "https://paulorodrigues-isep.sirv.com/TASSI/BlocoIJ_elevador_Piso0.jpg"
         }]
     }
 
     const viewBeaconInfo = (beacon: { latitude: number; longitude: number; image: string; name: string; }) => {
-        navigation.navigate('BeaconInfo', { beaconInfo: beacon });
+        navigation.navigate('BeaconInfo', { beaconInfo: beacon, onPressGoTo: goTo });
     };
 
     useEffect(() => {
@@ -209,9 +247,6 @@ const Map = ({ navigation }: { navigation: any }) => {
 
     const findNearestStairsOrElevator = async ({ latitude, longitude }) => {
         const Accessibility = await AsyncStorage.getItem('accessibilityLvl')
-
-        console.log(Accessibility);
-
 
         let minDistance = Number.MAX_VALUE;
         let nearestStairsOrElevator = null;
@@ -271,7 +306,7 @@ const Map = ({ navigation }: { navigation: any }) => {
         setIsStart(true);
     }
 
-    function findLocationCoordinates(locationName: string) {
+    const findLocationCoordinates = (locationName: string) => {
         // Procurar no objeto entriesISEP
         for (const entry of entriesISEP) {
             if (entry.name === locationName) {
@@ -320,6 +355,34 @@ const Map = ({ navigation }: { navigation: any }) => {
         setIsStart(false);
     }
 
+    const handleSearch = (searchTerm: string) => {
+        // Função para percorrer os blocos e encontrar as salas correspondentes ao termo de pesquisa
+        const searchMatches = [];
+
+        // Percorra o BlockB
+        BlockB.classrooms.forEach(classroom => {
+            if (classroom.classroom.toLowerCase().includes(searchTerm.toLowerCase())) {
+                searchMatches.push(classroom);
+            }
+        });
+
+        // Percorra o BlockC
+        /*BlockC.classrooms.forEach(classroom => {
+            if (classroom.classroom.toLowerCase().includes(searchTerm.toLowerCase())) {
+                searchMatches.push(classroom);
+            }
+        });
+
+        // Percorra o BlockIJ
+        BlockIJ.classrooms.forEach(classroom => {
+            if (classroom.classroom.toLowerCase().includes(searchTerm.toLowerCase())) {
+                searchMatches.push(classroom);
+            }
+        });*/
+
+        setSearchResults(searchMatches);
+    };
+
     return (
         <View style={styles.container}>
             <View style={styles.inputContainer}>
@@ -327,12 +390,13 @@ const Map = ({ navigation }: { navigation: any }) => {
                     style={styles.input}
                     placeholder="Search"
                     placeholderTextColor="gray"
+                    onChangeText={(text: string) => handleSearch(text)}
                 />
                 <Picker
                     selectedValue={selectBeacons}
                     style={styles.picker}
                     dropdownIconColor="#9a1924"
-                    onValueChange={(itemValue) => setSelectBeacons(itemValue)}
+                    onValueChange={(itemValue: React.SetStateAction<string>) => setSelectBeacons(itemValue)}
                 >
                     <Picker.Item label="All Beacons" value="" />
                     <Picker.Item label="Entries ISEP Beacons" value="entries" />
@@ -352,59 +416,81 @@ const Map = ({ navigation }: { navigation: any }) => {
                 showsUserLocation={true}
                 loadingEnabled={true}
             >
-                {entriesISEP.map((entrie, index) => (
-                    (selectBeacons === '' || selectBeacons === "entries") && (
-                        <Marker
-                            key={index}
-                            coordinate={{ latitude: entrie.latitude, longitude: entrie.longitude }}
-                            pinColor={'red'}
-                            stopPropagation
-                            onPress={() => viewBeaconInfo(entrie)}
-                        />
+                {searchResults.length == 0 && (
+                    <>
+                        {entriesISEP.map((entrie, index) => (
+                            (selectBeacons === '' || selectBeacons === "entries") && (
+                                <Marker
+                                    key={index}
+                                    coordinate={{ latitude: entrie.latitude, longitude: entrie.longitude }}
+                                    pinColor={'red'}
+                                    stopPropagation
+                                    onPress={() => viewBeaconInfo(entrie)}
+                                />
+                            )
+                        ))}
+                        {Object.keys(BlockB).map((key) => (
+                            (selectBeacons === '' || selectBeacons === "B") && (
+                                BlockB[key].map((coord: { latitude: any; longitude: any; image?: string; name?: string; }, index: React.Key | null | undefined) => (
+                                    <Marker
+                                        key={index}
+                                        coordinate={{ latitude: coord.latitude, longitude: coord.longitude }}
+                                        pinColor={'#F67402'}
+                                        stopPropagation
+                                        onPress={() => viewBeaconInfo(coord)}
+                                    />
+                                )
+                                )
+                            )
+                        ))}
+                        {Object.keys(BlockC).map((key) => (
+                            (selectBeacons === '' || selectBeacons === "C") && (
+                                BlockC[key].map((coord: { latitude: any; longitude: any; image?: string; name?: string; }, index: React.Key | null | undefined) => (
+                                    <Marker
+                                        key={index}
+                                        coordinate={{ latitude: coord.latitude, longitude: coord.longitude }}
+                                        pinColor={'#990000'}
+                                        stopPropagation
+                                        onPress={() => viewBeaconInfo(coord)}
+                                    />
+                                )
+                                )
+                            )
+                        ))}
+                        {Object.keys(BlockIJ).map((key) => (
+                            (selectBeacons === '' || selectBeacons === "IJ") && (
+                                BlockIJ[key].map((coord: { latitude: any; longitude: any; image?: string; name?: string; }, index: React.Key | null | undefined) => (
+                                    <Marker
+                                        key={index}
+                                        coordinate={{ latitude: coord.latitude, longitude: coord.longitude }}
+                                        pinColor={'#254F8C'}
+                                        stopPropagation
+                                        onPress={() => viewBeaconInfo(coord)}
+                                    />
+                                )
+                                )
+                            )
+                        ))}
+                    </>
+                )}
+                {
+                    searchResults.length > 0 && (
+                        <>
+                            {searchResults.map((coord: { latitude: any; longitude: any; image?: string; name?: string; }, index: React.Key | null | undefined) => (
+                                <Marker
+                                    key={index}
+                                    coordinate={{ latitude: coord.latitude, longitude: coord.longitude }}
+                                    pinColor={'#254F8C'}
+                                    stopPropagation
+                                    onPress={() => viewBeaconInfo(coord)}
+                                />
+                            )
+                            )}
+                        </>
                     )
-                ))}
-                {Object.keys(BlockB).map((key) => (
-                    (selectBeacons === '' || selectBeacons === "B") && (
-                        BlockB[key].map((coord, index) => (
-                            <Marker
-                                key={index}
-                                coordinate={{ latitude: coord.latitude, longitude: coord.longitude }}
-                                pinColor={'#F67402'}
-                                stopPropagation
-                                onPress={() => viewBeaconInfo(coord)}
-                            />
-                        )
-                        )
-                    )
-                ))}
-                {Object.keys(BlockC).map((key) => (
-                    (selectBeacons === '' || selectBeacons === "C") && (
-                        BlockC[key].map((coord, index) => (
-                            <Marker
-                                key={index}
-                                coordinate={{ latitude: coord.latitude, longitude: coord.longitude }}
-                                pinColor={'#990000'}
-                                stopPropagation
-                                onPress={() => viewBeaconInfo(coord)}
-                            />
-                        )
-                        )
-                    )
-                ))}
-                {Object.keys(BlockIJ).map((key) => (
-                    (selectBeacons === '' || selectBeacons === "IJ") && (
-                        BlockIJ[key].map((coord, index) => (
-                            <Marker
-                                key={index}
-                                coordinate={{ latitude: coord.latitude, longitude: coord.longitude }}
-                                pinColor={'#254F8C'}
-                                stopPropagation
-                                onPress={() => viewBeaconInfo(coord)}
-                            />
-                        )
-                        )
-                    )
-                ))}
+                }
+
+
                 {userLocation && nearestEntry && destination && (
                     <>
                         <Marker
@@ -444,7 +530,7 @@ const Map = ({ navigation }: { navigation: any }) => {
                         selectedValue={destiny}
                         style={styles.pickerDestiny}
                         dropdownIconColor="#9a1924"
-                        onValueChange={(itemValue) => setDestiny(itemValue)}
+                        onValueChange={(itemValue: React.SetStateAction<string>) => setDestiny(itemValue)}
                     >
                         <Picker.Item label="Select your destination" value="" />
                         {locations.map((location, index) => (

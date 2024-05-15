@@ -9,7 +9,7 @@ import {
 import './utils/i18n.js'
 import { useTranslation } from 'react-i18next';
 
-const BeaconsInfo = ({ navigation }: { navigation: any },{ route }:{ route: any } ) => {
+const BeaconsInfo = ({ navigation }: { navigation: any }, { route }: { route: any }) => {
     const { beaconInfo } = route.params;
     const { t, i18n } = useTranslation();
 
@@ -26,11 +26,14 @@ const BeaconsInfo = ({ navigation }: { navigation: any },{ route }:{ route: any 
                 <Text style={styles.beaconName}>{beaconInfo.name}</Text>
                 <Image
                     source={{ uri: beaconInfo.image }}
-                    style={{ width: "100%", height: 250 }} // Ajuste o tamanho conforme necessário
+                    style={styles.image} // Usando estilo definido
+                    resizeMode="contain"
                 />
-                <Text style={styles.beaconInfo}>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptate provident, sapiente ratione, praesentium laboriosam vitae expedita eaque optio dolor impedit porro, aliquam repellendus quae. Aspernatur similique vitae delectus? Delectus, voluptates.</Text>
+                <Text style={styles.beaconInfo}>
+                    {beaconInfo.description}
+                </Text>
             </View>
-            <TouchableOpacity style={styles.GoBtn} onPress={back}>
+            <TouchableOpacity style={styles.GoBtn} onPress={() => { onPressGoTo(); back(); }} disabled={true}>
                 <Text style={styles.GoBtnText}>{t('GO TO')}</Text>
             </TouchableOpacity>
         </View>
@@ -41,7 +44,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'space-between', // Alinha os itens na parte superior e inferior
+        justifyContent: 'space-between',
     },
     content: {
         flex: 1,
@@ -75,13 +78,18 @@ const styles = StyleSheet.create({
         paddingVertical: 15,
         paddingHorizontal: 30,
         borderRadius: 5,
-        marginBottom: 20, // Espaço para evitar que o botão seja cortado
+        marginBottom: 20,
+        opacity: 0.5
     },
     GoBtnText: {
         color: 'white',
         fontWeight: 'bold',
         fontSize: 16,
         textAlign: 'center'
+    },
+    image: {
+        width: "100%",
+        height: 250, // Ajuste o tamanho conforme necessário
     },
 });
 
