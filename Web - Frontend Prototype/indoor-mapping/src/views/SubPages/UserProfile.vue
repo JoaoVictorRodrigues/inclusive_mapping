@@ -21,34 +21,49 @@
         <Field
           class="w-full mr-12"
           f_id="userM_Name"
+          v-model:f_value="profileInfo.name"
           f_label="Full Name"
           f_type="text"
           f_placeholder="Enter the user's name"
           f_icon="fa-user-circle"
+          :f_disabled="this.edit"
         ></Field>
         <!-- Email -->
         <Field
           class="w-full"
           f_id="userM_Email"
+          v-model:f_value="profileInfo.email"
           f_label="Email Address"
           f_type="text"
           f_placeholder="Enter the user's email"
           f_icon="fa-envelope-o"
-        ></Field>
-        <!-- Phone Number -->
-        <Field
-          class="w-full"
-          f_id="userM_Number"
-          f_label="Phone Number"
-          f_type="text"
-          f_placeholder="Enter the user's phone number"
-          f_icon="fa-phone"
+          :f_disabled="this.edit"
         ></Field>
       </form>
       <div class="flex flex-row justify-end">
         <!-- Add User Button -->
-        <button class="w-24 rounded-md mt-8 p-2 bg-gray-400 text-white font-bold">Cancel</button>
-        <button class="w-24 rounded-md mt-8 p-2 ml-6 bg-red-700 text-white font-bold">Save</button>
+        <div v-if="this.edit">
+          <button
+            class="w-24 rounded-md mt-8 p-2 ml-6 bg-red-700 text-white font-bold"
+            @click="startInfoChange"
+          >
+            Edit
+          </button>
+        </div>
+        <div v-else>
+          <button
+            class="w-24 rounded-md mt-8 p-2 bg-gray-400 text-white font-bold"
+            @click="cancelInfoChange"
+          >
+            Cancel
+          </button>
+          <button
+            class="w-24 rounded-md mt-8 p-2 ml-6 bg-red-700 text-white font-bold"
+            @click="saveUserChanges"
+          >
+            Save
+          </button>
+        </div>
       </div>
     </div>
     <!--Others-->
@@ -58,7 +73,7 @@
         <!--title-->
         <h4 class="text-left text-2xl border-b-2 mb-4 pb-1">Reset Password</h4>
         <!--Info-->
-        <div class="flex flex-row justify-between items-center">
+        <div class="flex flex-row justify-between items-start">
           <p class="basis-3/5 text-start">
             An email will be sent to your account with the link to change your password.
           </p>
@@ -87,6 +102,7 @@
 
 <script>
 import Field from '../../components/Field.vue'
+import api from '../API/api'
 
 export default {
   components: {
@@ -96,7 +112,58 @@ export default {
     return {
       hasImg: false,
       defImg: '/images/default_avatar.png',
-      img: ''
+      img: '',
+      profileInfo: { name: '', email: '' },
+      previousInfo: null,
+      edit: true
+    }
+  },
+  mounted() {
+    this.profileInfo.name = localStorage.getItem('username')
+    this.profileInfo.email = localStorage.getItem('email')
+  },
+  methods: {
+    startInfoChange() {
+      this.edit = !this.edit
+      this.previousInfo = JSON.parse(JSON.stringify(this.profileInfo))
+    },
+    cancelInfoChange() {
+      this.edit = !this.edit
+      this.profileInfo = JSON.parse(JSON.stringify(this.previousInfo))
+    },
+    saveUserChanges() {
+      if (JSON.stringify(this.previousInfo) !== JSON.stringify(this.profileInfo)) {
+        var response = this.saveUserChanges()
+        console.log(response)
+        
+        localStorage.setItem('email', this.profileInfo.email)
+        localStorage.setItem('username', this.profileInfo.name)
+      } else {
+        alert('Same values!!')
+      }
+    },
+    async saveUser() {
+      const token = localStorage.getItem('token')
+      const userID = localStorage.getItem('userID')
+
+      return await api
+        .put(`/users/${userID}`, {
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            Authorization: `Bearer ${token}`
+          },
+          params: {
+            name: this.profileInfo.name,
+            email: this.profileInfo.email
+          }
+        })
+        .then(function (response) {
+          console.log(response.data)
+        })
+        .catch(function (error) {
+          alert(error)
+        })
     }
   }
 }

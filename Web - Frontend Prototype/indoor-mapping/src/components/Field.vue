@@ -11,6 +11,7 @@
         :name="f_id"
         :placeholder="f_placeholder"
         :value="f_value"
+        :disabled="f_disabled"
         @input="$emit('update:f_value', $event.target.value)"
       />
       <i v-if="f_icon" :class="'fa ' + f_icon + ' fieldIcon'"></i>
@@ -26,7 +27,8 @@ export default {
     f_label: { type: String, required: true },
     f_type: { type: String, required: true },
     f_placeholder: { type: String, default: '' },
-    f_icon: { type: String, default: '' }
+    f_icon: { type: String, default: '' },
+    f_disabled: { type: Boolean, default: false }
   },
   emits: ['update:f_value']
 }
