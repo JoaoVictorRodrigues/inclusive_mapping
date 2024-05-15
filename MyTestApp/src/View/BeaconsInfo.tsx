@@ -6,9 +6,12 @@ import {
     Image,
     TouchableOpacity
 } from "react-native";
+import './utils/i18n.js'
+import { useTranslation } from 'react-i18next';
 
-const BeaconsInfo = ({ navigation, route }) => {
+const BeaconsInfo = ({ navigation }: { navigation: any },{ route }:{ route: any } ) => {
     const { beaconInfo } = route.params;
+    const { t, i18n } = useTranslation();
 
     const back = () => {
         navigation.navigate('Map');
@@ -18,7 +21,7 @@ const BeaconsInfo = ({ navigation, route }) => {
         <View style={styles.container}>
             <View style={styles.content}>
                 <TouchableOpacity style={styles.BackBtn} onPress={back}>
-                    <Text style={styles.BackBtnText}>Back</Text>
+                    <Text style={styles.BackBtnText}>{t('Back')}</Text>
                 </TouchableOpacity>
                 <Text style={styles.beaconName}>{beaconInfo.name}</Text>
                 <Image
@@ -28,7 +31,7 @@ const BeaconsInfo = ({ navigation, route }) => {
                 <Text style={styles.beaconInfo}>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptate provident, sapiente ratione, praesentium laboriosam vitae expedita eaque optio dolor impedit porro, aliquam repellendus quae. Aspernatur similique vitae delectus? Delectus, voluptates.</Text>
             </View>
             <TouchableOpacity style={styles.GoBtn} onPress={back}>
-                <Text style={styles.GoBtnText}>GO TO</Text>
+                <Text style={styles.GoBtnText}>{t('GO TO')}</Text>
             </TouchableOpacity>
         </View>
     );

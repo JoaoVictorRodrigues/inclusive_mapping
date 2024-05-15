@@ -14,6 +14,8 @@ import {styles} from './css/StylesSheet';
 import {KeyboardAvoidingView} from 'react-native';
 import api from '../api';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import './utils/i18n.js'
+import { useTranslation } from 'react-i18next';
 
 //Html
 const ProfilePage = ({navigation}: {navigation: any}) => {
@@ -27,6 +29,7 @@ const ProfilePage = ({navigation}: {navigation: any}) => {
   let [edit, setEdit] = useState(false);
   let [focus, setFocus] = useState(false);
   const [focusedInput, setFocusedInput] = useState<string | null>(null);
+  const { t, i18n } = useTranslation();
 
   const handleFocus = (inputName: string) => {
     setFocus(true);
@@ -159,7 +162,7 @@ const ProfilePage = ({navigation}: {navigation: any}) => {
             id="btnBackError"
             style={styles.btnError}
             onPress={() => ChangePage('Home')}>
-            <Text style={styles.btnLabel}>Back</Text>
+            <Text style={styles.btnLabel}>{t('Back')}</Text>
           </TouchableOpacity>
         </View>
       );
@@ -171,8 +174,8 @@ const ProfilePage = ({navigation}: {navigation: any}) => {
           <Text style={styles.headerLabels} onPress={() => ChangePage('Home')}>
             Back
           </Text>
-          <Text style={styles.pageName}>Profile</Text>
-          <Text style={styles.headerLabels}>logout</Text>
+          <Text style={styles.pageName}>{t('Profile')}</Text>
+          <Text style={styles.headerLabels}>Logout</Text>
         </View>
         <View
           style={[
@@ -264,7 +267,7 @@ const ProfilePage = ({navigation}: {navigation: any}) => {
                   id="btnChange"
                   style={styles.btnGray}
                   onPress={ShowButtons}>
-                  <Text style={styles.btnLabel}>Change Information</Text>
+                  <Text style={styles.btnLabel}>{t('Change Information')}</Text>
                 </TouchableOpacity>
               </View>
             ) : (
@@ -273,13 +276,13 @@ const ProfilePage = ({navigation}: {navigation: any}) => {
                   id="btnSave"
                   style={styles.btnEdit}
                   onPress={SaveChanges}>
-                  <Text style={styles.btnLabel}>Save</Text>
+                  <Text style={styles.btnLabel}>{t('Save')}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   id="btnCancel"
                   style={styles.btnEdit}
                   onPress={HideButtons}>
-                  <Text style={styles.btnLabel}>Cancel</Text>
+                  <Text style={styles.btnLabel}>{t('Cancel')}</Text>
                 </TouchableOpacity>
               </View>
             )}

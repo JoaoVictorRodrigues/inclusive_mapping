@@ -3,6 +3,8 @@ import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-nativ
 import { Picker } from '@react-native-picker/picker';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import api from "../api/index.js";
+import './utils/i18n.js'
+import { useTranslation } from 'react-i18next';
 
 const Register = ({ navigation }: { navigation: any }) => {
     const [email, setEmail] = useState('');
@@ -13,6 +15,7 @@ const Register = ({ navigation }: { navigation: any }) => {
     const [focusedInput, setFocusedInput] = useState<string | null>(null);
     const [errorMessage, setErrorMessage] = useState("");
     const [errorMessagePassword, setErrorMessagePassword] = useState("");
+    const { t, i18n } = useTranslation();
 
     const handleFocus = (inputName: string) => {
         setFocusedInput(inputName);
@@ -81,8 +84,8 @@ const Register = ({ navigation }: { navigation: any }) => {
     return (
         <View style={styles.container}>
             <View id='Header' style={styles.pageHeader}>
-                <Text style={styles.title}>Create account</Text>
-                <Text style={styles.headerText}>Join us! Create your account for exclusive benefits tailored to you</Text>
+                <Text style={styles.title}>{t('Create account')}</Text>
+                <Text style={styles.headerText}>{t('Join us! Create your account for exclusive benefits tailored to you.')}</Text>
             </View>
             <View id="Form" style={[styles.form]}>
                 <View style={styles.visible}>
@@ -141,7 +144,7 @@ const Register = ({ navigation }: { navigation: any }) => {
                         <Text style={styles.signUpButtonText}>Sign Up</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.link} onPress={navigationLogin}>
-                        <Text style={styles.linkText}>Already have an account?</Text>
+                        <Text style={styles.linkText}>{t('Already have an account?')}</Text>
                     </TouchableOpacity>
                 </View>
             </View>

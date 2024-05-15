@@ -3,8 +3,11 @@ import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-nativ
 import { Picker } from '@react-native-picker/picker';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import api from "../api/index.js";
+import './utils/i18n.js'
+import { useTranslation } from 'react-i18next';
 
 const Register = ({ navigation }: { navigation: any }) => {
+    const { t, i18n } = useTranslation();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [focusedInput, setFocusedInput] = useState<string | null>(null);
@@ -53,7 +56,7 @@ const Register = ({ navigation }: { navigation: any }) => {
         <View style={styles.container}>
             <View id='Header' style={styles.pageHeader}>
                 <Text style={styles.title}>Login</Text>
-                <Text style={styles.headerText}>Sign in to access your account</Text>
+                <Text style={styles.headerText}>{t('Sign in to access your account')}</Text>
             </View>
             <View id="Form" style={[styles.form]}>
                 <View style={styles.visible}>
@@ -82,7 +85,7 @@ const Register = ({ navigation }: { navigation: any }) => {
                         <Text style={styles.signInButtonText}>Sign In</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.link} onPress={navigationRegister}>
-                        <Text style={styles.linkText}>Create new account</Text>
+                        <Text style={styles.linkText}>{t('Create new account')}</Text>
                     </TouchableOpacity>
                 </View>
             </View>

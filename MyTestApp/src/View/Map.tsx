@@ -16,7 +16,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const { width, height } = Dimensions.get('screen');
 
-const Map = ({ navigation }) => {
+const Map = ({ navigation }: { navigation: any }) => {
     const [selectBeacons, setSelectBeacons] = useState(''); ('');
     const [userLocation, setUserLocation] = useState(null);
     const [nearestEntry, setNearestEntry] = useState(null);

@@ -1,7 +1,10 @@
 import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import './utils/i18n.js'
+import { useTranslation } from 'react-i18next';
 
 const LandingPage = ({ navigation }: { navigation: any }) => {
+    const { t, i18n } = useTranslation();
     return (
         <View style={styles.container}>
             <View id='ImageHolder' style={styles.imageHolder}>
@@ -10,7 +13,7 @@ const LandingPage = ({ navigation }: { navigation: any }) => {
             </View>
             <View id='BtnContainer' style={styles.btnContainer}>
                 <TouchableOpacity style={styles.btnRegister} onPress={() => navigation.navigate("Register")}>
-                    <Text style={styles.btnLabelRegister}>Register</Text>
+                    <Text style={styles.btnLabelRegister}>{t('Register')}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.btnLogin} onPress={() => navigation.navigate("Login")}>
                     <Text style={styles.btnLabelLogin}>Login</Text>

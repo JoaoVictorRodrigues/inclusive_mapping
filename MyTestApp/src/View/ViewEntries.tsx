@@ -1,13 +1,16 @@
 import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import './utils/i18n.js'
+import { useTranslation } from 'react-i18next';
 
 const ViewEntries = ({ navigation }: { navigation: any }) => {
     const rows = new Array(4).fill('Previous Entry');
+    const { t, i18n } = useTranslation();
 
     return (
         <View style={{ flex: 1, backgroundColor: 'black' }}>
             <View style={styles.pageHeader}>
-                <Text style={styles.headerLabelsLeft} onPress={() => navigation.navigate('Home')}>Back</Text> 
+                <Text style={styles.headerLabelsLeft} onPress={() => navigation.navigate('Home')}>{t('Back')}</Text> 
             </View>
             <View style={styles.container}>
                 {rows.map((row, index) => (

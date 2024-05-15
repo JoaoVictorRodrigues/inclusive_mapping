@@ -1,11 +1,15 @@
 import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import './utils/i18n.js'
+import { useTranslation } from 'react-i18next';
 
 const HomePage = ({navigation}: {navigation: any}) => {
+    const { t, i18n } = useTranslation();
+
     return (
         <View style={{ flex: 1, backgroundColor: 'black'}}>
             <View id='Header' style={styles.pageHeader}>
-                <Text style={styles.headerLabelsLeft}>Back</Text>
+                <Text style={styles.headerLabelsLeft}>{t('Back')}</Text>
                 <Text style={styles.headerLabelsRight} onPress={() => navigation.navigate('Feedback')}>Feedback</Text> 
                 <Text style={styles.headerLabelsRight}>Logout</Text>
             </View>
@@ -17,16 +21,16 @@ const HomePage = ({navigation}: {navigation: any}) => {
                   style={styles.btnContainer}>
                     <View style={styles.whiteRect}>
                         <TouchableOpacity style={styles.btnOrange} onPress={() => navigation.navigate("Map")}>
-                            <Text style={styles.btnLabelOrange}>Map</Text>    
+                            <Text style={styles.btnLabelOrange}>{t('Map')}</Text>    
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.btnOrange} onPress={() => navigation.navigate("ViewEntries")}>
-                            <Text style={styles.btnLabelOrange}>View Entries</Text>    
+                            <Text style={styles.btnLabelOrange}>{t('View Entries')}</Text>    
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.btnGray}>
-                            <Text style={styles.btnLabelGray}>Virtual Diary</Text>    
+                            <Text style={styles.btnLabelGray}>{t('Virtual Diary')}</Text>    
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.btnOrange} onPress={() => navigation.navigate("Profile")}>
-                            <Text style={styles.btnLabelOrange}>Profile</Text>    
+                            <Text style={styles.btnLabelOrange}>{t('Profile')}</Text>    
                         </TouchableOpacity>      
                     </View> 
             </View>

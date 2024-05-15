@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
 import api from "../api/index.js";
+import './utils/i18n.js'
+import { useTranslation } from 'react-i18next';
 
 const Feedback = ({ navigation }: { navigation: any }) => {
     const [comment, setComment] = useState('');
     const [rating, setRating] = useState(0);
     const [errorMessage, setErrorMessage] = useState("");
+    const { t, i18n } = useTranslation();
 
     const submitFeedback = async () => {
         if (comment === '' || rating === 0) {
@@ -40,11 +43,11 @@ const Feedback = ({ navigation }: { navigation: any }) => {
     return (
         <View style={styles.container}>
             <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate('Home')}>
-                <Text style={styles.backButtonText}>Back</Text>
+                <Text style={styles.backButtonText}>{t('Back')}</Text>
             </TouchableOpacity>
             <Text style={styles.title}>Feedback</Text>
-            <Text style={styles.headerText}>We value your feedback.</Text>
-            <Text style={styles.headerText}>Please let us know how we're doing!</Text>
+            <Text style={styles.headerText}>{t('We value your feedback.')}</Text>
+            <Text style={styles.headerText}>{t("Please let us know how we're doing!")}</Text>
             <View style={styles.form}>
                 <TextInput
                         style={styles.input}
@@ -58,7 +61,7 @@ const Feedback = ({ navigation }: { navigation: any }) => {
                     </View>
                     <Text style={errorMessage !== "" ? styles.errorMessage : styles.errorMessageDisable}>{errorMessage}</Text>
                     <TouchableOpacity style={styles.submitButton} onPress={submitFeedback}>
-                        <Text style={styles.submitButtonText}>Submit Feedback</Text>
+                        <Text style={styles.submitButtonText}>{t('Submit Feedback')}</Text>
                 </TouchableOpacity>
             </View>
         </View>

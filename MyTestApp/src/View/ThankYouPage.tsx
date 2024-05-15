@@ -1,15 +1,18 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import './utils/i18n.js'
+import { useTranslation } from 'react-i18next';
 
 const ThankYouPage = ({ navigation }: { navigation: any }) => {
+    const { t, i18n } = useTranslation();
     return (
         <View style={styles.container}>
-            <Text style={styles.thankYouText}>Thank You!</Text>
-            <Text style={styles.feedbackText}>Your feedback is greatly appreciated.</Text>
+            <Text style={styles.thankYouText}>{t('Thank You!')}</Text>
+            <Text style={styles.feedbackText}>{t('Your feedback is greatly appreciated.')}</Text>
             <TouchableOpacity
                 style={styles.homeButton}
                 onPress={() => navigation.navigate('Home')}>
-                <Text style={styles.homeButtonText}>Go to Home</Text>
+                <Text style={styles.homeButtonText}>{t('Go to Home')}</Text>
             </TouchableOpacity>
         </View>
     );
