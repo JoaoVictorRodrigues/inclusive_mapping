@@ -42,10 +42,10 @@
         </div>
         <!-- Row 2 -->
         <div class="flex flex-row">
-          <div class="form-group flex flex-col mr-12" v-if="selected.index !== -1">
+          <div class="basis-1/3 form-group flex flex-col mr-12 justify-center items-start" v-if="selected.index !== -1">
             <label for="">User Type</label>
             <select
-              class="custom-select w-full bg-white rounded-md shadow-lg"
+              class="custom-select w-full bg-white rounded-md shadow-lg p-1.5 border-opacity-100 border-2 border-gray-200"
               name=""
               id="userS_Type"
               v-model="selected.type"
@@ -54,10 +54,10 @@
               <option value="admin">admin</option>
             </select>
           </div>
-          <div class="form-group flex flex-col mr-12" v-if="selected.index !== -1">
+          <div class="basis-1/3 form-group flex flex-col mr-12 justify-center items-start" v-if="selected.index !== -1">
             <label for="">Active User</label>
             <select
-              class="custom-select w-full bg-white rounded-md shadow-lg"
+              class="custom-select w-full bg-white rounded-md shadow-lg p-1.5 border-opacity-100 border-2 border-gray-200"
               name=""
               id="userS_Active"
               v-model="selected.active"
@@ -66,10 +66,10 @@
               <option :value="false">false</option>
             </select>
           </div>
-          <div class="form-group flex flex-col">
+          <div class="basis-1/3 form-group flex flex-col justify-center items-start">
             <label for="">Accessibility level</label>
             <select
-              class="custom-select w-full bg-white rounded-md shadow-lg"
+              class="custom-select w-full bg-white rounded-md shadow-lg p-1.5 border-opacity-100 border-2 border-gray-200"
               name=""
               id="userS_AccessibilityLvl"
               v-model.number="selected.AccessibilityLvl"
