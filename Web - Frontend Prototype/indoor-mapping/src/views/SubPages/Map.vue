@@ -1,7 +1,7 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <div>
-    <div id="map"></div>
+    <div id="map" style="max-height: calc(100% - 4rem); max-width: 100%"></div>
   </div>
 </template>
 
