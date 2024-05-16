@@ -65,8 +65,8 @@ export default {
   },
   methods: {
     async handleLogin() {
-      const email = 'admin@email.com' //this.input.email
-      const password = 'Admin' //this.input.password
+      const email = this.input.email //'admin@email.com' //this.input.email
+      const password = this.input.password //'Admin' //this.input.password
       const change = this.$emit
 
       console.log('Loading')

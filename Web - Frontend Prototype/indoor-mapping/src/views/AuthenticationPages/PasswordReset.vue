@@ -47,7 +47,7 @@
   <div>
     <button
       class="w-full rounded-md mt-8 p-2 bg-red-700 text-white font-bold"
-      @click="$emit('passwordReset')"
+      @click="ChangePassword"
     >
       Send Password Reset Link (Test)
     </button>
@@ -62,6 +62,7 @@
 
 <script>
 import Field from '../../components/Field.vue'
+import api from '../API/api'
 
 export default {
   components: {
@@ -79,7 +80,42 @@ export default {
     }
   },
   methods: {
-    ChangePassword() {}
+    async ChangePassword() {
+      if (this.input.password != this.input.passwordConfirm)
+        return alert('Confirm new password is different from New password')
+
+      if (
+        this.input.name === '' ||
+        this.input.name === ' ' ||
+        this.input.email === '' ||
+        this.input.email === ' ' ||
+        this.input.password === '' ||
+        this.input.passwordConfirm === ''
+      )
+        return alert('You need to fill up the fields.')
+
+      await api
+        .patch(
+          `/users?email=${this.input.email}`,
+          {
+            name: this.input.name,
+            password: this.input.password
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Accept: 'application/json'
+            }
+          }
+        )
+        .then(async function (res) {
+          console.log(res.data.message)
+          window.location.href = '/'
+        })
+        .catch(async function (error) {
+          alert(error.data.message)
+        })
+    }
   }
 }
 </script>
