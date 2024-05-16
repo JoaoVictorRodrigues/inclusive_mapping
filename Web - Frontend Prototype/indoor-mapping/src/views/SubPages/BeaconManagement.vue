@@ -73,7 +73,7 @@
       <!-- Header -->
       <div class="grid grid-cols-12 py-4 px-12 border border-gray-300 border-collapse">
         <b class="col-span-3 text-left">Location</b>
-        <b class="col-span-3 text-left">Coordenates</b>
+        <b class="col-span-4 text-left">Coordenates</b>
         <b class="col-span-2 text-left">floor</b>
         <b class="col-span-2 text-left">In Door</b>
         <b class="col-span-1">Actions</b>
@@ -85,7 +85,7 @@
             class="grid grid-cols-12 py-6 px-12 border-t border-collapse border-gray-300 items-center"
           >
             <div class="col-span-3 text-left">{{ u.locationType }}</div>
-            <div class="col-span-3 text-left">{{ u.position[0] + ' ' + u.position[1] }}</div>
+            <div class="col-span-4 text-left">{{ u.position[0] + ' ' + u.position[1] }}</div>
             <div class="col-span-2 text-left">{{ u.floor }}</div>
             <div class="col-span-2 text-left">{{ u.inDoor }}</div>
             <div class="col-span-1">
