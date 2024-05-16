@@ -16,13 +16,38 @@ import { defaults as defaultControls, ScaleLine } from 'ol/control'
 import { Tile as TileLayer, Vector as VectorLayer } from 'ol/layer'
 import { OSM, Vector as VectorSource } from 'ol/source'
 
+import api from '../API/api'
+
 export default {
   data() {
     return {
-      map: undefined
+      map: undefined,
+      beacons: []
     }
   },
   async mounted() {
+    const token = localStorage.getItem('token')
+    var beacons = this.beacons
+
+    await api
+      .get('/beacons', {
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then(async function (response) {
+        for (var i = 0; i < response.data.beacon.length; i++) {
+          beacons.push(response.data.beacon[i])
+        }
+      })
+      .catch(async function (error) {
+        alert(error)
+      })
+
+    console.log(this.beacons)
+
     await this.initiateMap()
   },
   methods: {
@@ -34,22 +59,25 @@ export default {
 
       const mapFeatures = []
 
-      const mockBeacon = new Feature({
-        geometry: new Point([long, lat])
-      })
-
-      mockBeacon.setStyle(
-        new Style({
-          image: new Icon({
-            color: '#fff',
-            crossOrigin: 'anonymous',
-            src: '/public/images/mapMarker.png',
-            scale: 0.1
-          })
+      for (let b of this.beacons) {
+        console.log(b)
+        const newBeacon = new Feature({
+          geometry: new Point([b.position[0], b.position[1]])
         })
-      )
 
-      mapFeatures.push(mockBeacon)
+        newBeacon.setStyle(
+          new Style({
+            image: new Icon({
+              color: '#fff',
+              crossOrigin: 'anonymous',
+              src: '/public/images/mapMarker.png',
+              scale: 0.1
+            })
+          })
+        )
+
+        mapFeatures.push(newBeacon)
+      }
 
       // create title layer
       var raster = new TileLayer({
