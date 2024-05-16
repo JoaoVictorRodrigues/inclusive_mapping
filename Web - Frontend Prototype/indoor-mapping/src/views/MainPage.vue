@@ -155,12 +155,14 @@ export default {
   beforeMount() {
     this.$router.push({ name: 'Map' })
     this.routes.find((route) => route.link.name === 'Map').open = true
-    this.getUserInfo()
+    //this.getUserInfo()
   },
   mounted() {
-    if (localStorage.getItem('username') === null || localStorage.getItem('email') === null) {
+    /* if (localStorage.getItem('username') === null || localStorage.getItem('email') === null) {
       this.getUserInfo()
-    }
+    }*/
+
+    this.username = localStorage.getItem('username')
   },
   updated() {
     this.username = localStorage.getItem('username')

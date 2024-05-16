@@ -67,7 +67,8 @@ export default {
     async handleLogin() {
       const email = this.input.email //'admin@email.com' //this.input.email
       const password = this.input.password //'Admin' //this.input.password
-      const change = this.$emit
+      //const change = this.$emit
+      const getUserData = this.GetUserData
 
       console.log('Loading')
       //Cheack if fields are not empty
@@ -88,11 +89,12 @@ export default {
           )
           .then(async function (response) {
             //localStorage.clear()
-            localStorage.setItem('token', response.data.accessToken)
+            /* localStorage.setItem('token', response.data.accessToken)
             localStorage.setItem('userID', response.data.id)
             localStorage.setItem('type', response.data.type)
-            localStorage.setItem('password', password)
-            change('logIn')
+            localStorage.setItem('password', password)*/
+            getUserData(response.data.accessToken, response.data.id, password)
+            //change('logIn')
           })
           .catch(function (error) {
             alert(error)
@@ -103,6 +105,28 @@ export default {
       //Test login
       //teste@email.com
       //teste
+    },
+    async GetUserData(token, userID, password) {
+      const change = this.$emit
+
+      //Get user data
+      await api
+        .get(`/users/${userID}`, {
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            Authorization: `Bearer ${token}`
+          }
+        })
+        .then(async function (res) {
+          localStorage.setItem('token', token)
+          localStorage.setItem('userID', res.data.user.id)
+          localStorage.setItem('type', res.data.user.type)
+          localStorage.setItem('password', password)
+          localStorage.setItem('username', res.data.user.name)
+          localStorage.setItem('email', res.data.user.email)
+          change('logIn')
+        })
     }
   }
 }
