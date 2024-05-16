@@ -143,10 +143,11 @@ const Map = ({ navigation }: { navigation: any }) => {
 
     const BlockE = {
         entries: [{
-            latitude: 41.17864776730567,
-            longitude: -8.607487133679149,
-            name: "Main entrance - Block J",
-            description: ""
+            latitude: 41.178598891226166,
+            longitude: -8.606697640155447,
+            name: "E-block entry Hall",
+            description: "Entrance door to block E. Here you can find a security guard if you need information. Closes at 8pm",
+            image: "https://paulorodrigues-isep.sirv.com/TASSI/Hall_BlocoE.JPG"
         }]
     }
 
@@ -446,6 +447,20 @@ const Map = ({ navigation }: { navigation: any }) => {
                         {Object.keys(BlockC).map((key) => (
                             (selectBeacons === '' || selectBeacons === "C") && (
                                 BlockC[key].map((coord: { latitude: any; longitude: any; image?: string; name?: string; }, index: React.Key | null | undefined) => (
+                                    <Marker
+                                        key={index}
+                                        coordinate={{ latitude: coord.latitude, longitude: coord.longitude }}
+                                        pinColor={'#990000'}
+                                        stopPropagation
+                                        onPress={() => viewBeaconInfo(coord)}
+                                    />
+                                )
+                                )
+                            )
+                        ))}
+                        {Object.keys(BlockE).map((key) => (
+                            (selectBeacons === '' || selectBeacons === "C") && (
+                                BlockE[key].map((coord: { latitude: any; longitude: any; image?: string; name?: string; }, index: React.Key | null | undefined) => (
                                     <Marker
                                         key={index}
                                         coordinate={{ latitude: coord.latitude, longitude: coord.longitude }}
